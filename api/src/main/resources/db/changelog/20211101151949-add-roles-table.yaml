@@ -1,0 +1,63 @@
+databaseChangeLog:
+- changeSet:
+    id: 1635776416409-1
+    author: adil (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: rolesPK
+            name: id
+            type: BIGINT
+        - column:
+            name: role_name
+            type: VARCHAR(255)
+        tableName: roles
+- changeSet:
+    id: 1635776416409-2
+    author: adil (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: user_id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: role_id
+            type: BIGINT
+        tableName: user_role
+- changeSet:
+    id: 1635776416409-3
+    author: adil (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: user_role
+        constraintName: FKj345gk1bovqvfame88rcx7yyx
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1635776416409-4
+    author: adil (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: role_id
+        baseTableName: user_role
+        constraintName: FKt7e7djp752sqn6w22i6ocqy6q
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: roles
+        validate: true
+

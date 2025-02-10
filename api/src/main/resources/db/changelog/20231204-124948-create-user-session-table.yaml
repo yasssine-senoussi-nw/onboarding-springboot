@@ -1,0 +1,51 @@
+databaseChangeLog:
+- changeSet:
+    id: 1701694206814-1
+    author: khemisse (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_sessionsPK
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: expiration_date
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: refresh_token
+            type: VARCHAR(255)
+        - column:
+            name: user_id
+            type: UUID
+        tableName: user_sessions
+- changeSet:
+    id: 1701694206814-2
+    author: khemisse (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: refresh_token
+        constraintName: UK5ou0u1pqftlypbt1wcsbl5hgh
+        tableName: user_sessions
+- changeSet:
+    id: 1701694206814-3
+    author: khemisse (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: user_sessions
+        constraintName: FK8klxsgb8dcjjklmqebqp1twd5
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+

@@ -1,0 +1,32 @@
+databaseChangeLog:
+- changeSet:
+    id: 1634126168524-1
+    author: adil (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: usersPK
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: users
+- changeSet:
+    id: 1634126168524-2
+    author: adil (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: UC_USERSNAME_COL
+        tableName: users
+

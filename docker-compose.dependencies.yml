@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17.1@sha256:163763c8afd28cae69035ce84b12d8180179559c747c0701b3cad17818a0dbc5
+    restart: always
+    environment:
+      POSTGRES_DB: "$POSTGRE_DATABASE_NAME"
+      POSTGRES_USER: "$POSTGRE_USER"
+      POSTGRES_PASSWORD: "$POSTGRE_PASSWORD"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - 5432 # A random available public port will be assigned. To retrieve its value: `docker compose port db 5432`
+
+volumes:
+  db_data:

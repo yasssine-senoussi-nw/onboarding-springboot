@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - include:
+      file: changelog/20211013125551-create-user-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20211022144135-add-username-and-password-columns.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20211022144524-make-password-and-username-non-nullable.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20211101151949-add-roles-table.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changelog/20231204-124948-create-user-session-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20241229-184755-mark-user-in-usersession-as-nonnull.yaml
+      relativeToChangelogFile: true

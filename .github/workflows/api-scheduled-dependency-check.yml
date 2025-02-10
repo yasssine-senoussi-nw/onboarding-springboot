@@ -1,0 +1,110 @@
+name: Daily check for vulnerable dependencies
+on:
+  schedule:
+    - cron: "17 7 * * *"
+  workflow_dispatch:
+
+env:
+  PROJECT_DIR: ${{ github.workspace }}/api
+  MAVEN_OPTS: "-Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --fail-at-end"
+
+jobs:
+
+  dependency-security-update-database:
+    name: Daily update of vulnerabilities database
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    timeout-minutes: 15
+    steps:
+
+      - name: Check out repository code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup Maven
+        id: setup-maven
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
+        with:
+          distribution: 'temurin'
+          java-version: '17.0.14+7'
+          cache: 'maven'
+
+      - name: Get Dependency Check version from POM.XML
+        id: dependency-check-version
+        run: echo "::set-output name=value::$(grep -Po '\K<org\.owasp\.dependency-check-maven\.version>\K.+?(?=</org\.owasp\.dependency-check-maven\.version>)' $PROJECT_DIR/pom.xml)"
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Cache Dependency Check Database
+        id: dependency-check-database-cache
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+        with:
+          path: ${{ env.PROJECT_DIR }}/dependency-check-database
+          key: dependency-check-${{ runner.os }}-${{ steps.dependency-check-version.outputs.value }}-${{ steps.date.outputs.date }}
+          restore-keys: |
+            dependency-check-${{ runner.os }}-${{ steps.dependency-check-version.outputs.value }}-
+            dependency-check-${{ runner.os }}-
+            dependency-check-
+
+      - name: Update vulnerabilities database
+        run: |
+          cd $PROJECT_DIR
+          ./mvnw $MAVEN_CLI_OPTS -DdataDirectory=$PROJECT_DIR/dependency-check-database -DnvdApiKey=${{ secrets.NVD_API_KEY }} dependency-check:update-only
+
+  dependency-security-check:
+    name: Daily check for vulnerable dependencies
+    runs-on: ubuntu-24.04
+    needs: dependency-security-update-database
+    defaults:
+      run:
+        shell: bash
+    timeout-minutes: 2
+    steps:
+
+      - name: Check out repository code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup Maven
+        id: setup-maven
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
+        with:
+          distribution: 'temurin'
+          java-version: '17.0.14+7'
+          cache: 'maven'
+
+      - name: Get Dependency Check version from POM.XML
+        id: dependency-check-version
+        run: echo "::set-output name=value::$(grep -Po '\K<org\.owasp\.dependency-check-maven\.version>\K.+?(?=</org\.owasp\.dependency-check-maven\.version>)' $PROJECT_DIR/pom.xml)"
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Cache Dependency Check Database
+        id: dependency-check-database-cache
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+        with:
+          path: ${{ env.PROJECT_DIR }}/dependency-check-database
+          key: dependency-check-${{ runner.os }}-${{ steps.dependency-check-version.outputs.value }}-${{ steps.date.outputs.date }}
+          restore-keys: |
+            dependency-check-${{ runner.os }}-${{ steps.dependency-check-version.outputs.value }}-
+            dependency-check-${{ runner.os }}-
+            dependency-check-
+
+      - name: Run vulnerability check on all dependencies
+        run: |
+          cd $PROJECT_DIR
+          ./mvnw $MAVEN_CLI_OPTS -DdataDirectory=$PROJECT_DIR/dependency-check-database -DnvdApiKey=${{ secrets.NVD_API_KEY }} dependency-check:check
+
+      - name: Upload vulnerable dependencies report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        with:
+          name: vulnerable-dependencies-report
+          retention-days: "1"
+          path: |
+            ${{ env.PROJECT_DIR }}/target/dependency-check-report.html

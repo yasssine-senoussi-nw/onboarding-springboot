@@ -1,0 +1,11 @@
+databaseChangeLog:
+- changeSet:
+    id: 1735498081764-1
+    author: user (generated)
+    changes:
+    - addNotNullConstraint:
+        columnDataType: uuid
+        columnName: user_id
+        tableName: user_sessions
+        validate: true
+

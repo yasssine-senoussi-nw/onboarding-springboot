@@ -1,0 +1,67 @@
+#!/bin/bash
+
+####################### Colors #######################
+color_red='\033[0;31m'
+color_green='\033[0;32m'
+color_yellow='\033[0;33m'
+color_default='\033[0m'
+
+####################### Args #########################
+command=$1
+migrationLabel=$2
+
+####################### Variables #########################
+MIGRATION_LABEL=$migrationLabel
+DATE_WITH_TIME=$(date -u "+%Y%m%d-%H%M%S")
+DIFF_CHANGELOG_FILE=src/main/resources/db/changelog/${DATE_WITH_TIME}-${MIGRATION_LABEL}.yaml
+DIFF_CHANGELOG_FILE_PATH=changelog/${DATE_WITH_TIME}-${MIGRATION_LABEL}.yaml
+CHANGE_LOG_MASTER=src/main/resources/db/changelog-master.yaml
+NUMBER_OF_ARGUMENTS=$#
+
+# this function is called to exit the script
+finish() {
+  printf "\n${color_green}Have a great development day!!${color_default}\n"
+  exit
+}
+
+# this function is invoked when the user enter an unknown command (the command is retrieved from $1)
+unknown() {
+  printf "\n${color_red}Unknown command, Read the file to know available commands.${color_default}\n"
+}
+
+# this function is responsible for making migration
+makeMigration() {
+  if ! [[ "$MIGRATION_LABEL" =~ ^[a-z0-9-]{1,}$ ]] || [ $NUMBER_OF_ARGUMENTS -gt 2 ]; then
+      printf "\n${color_red}Your migration label is not valid, it must respect the following regex ${color_yellow}^[a-z0-9-]{1,}$ ${color_default} Try: ${color_green} db make valid-migration-label${color_default}\n"
+      finish
+  fi
+  ./mvnw clean compile
+  ./mvnw liquibase:diff "-Dliquibase.diffChangeLogFile=${DIFF_CHANGELOG_FILE}"
+  echo "  - include:" >> "${CHANGE_LOG_MASTER}"
+  echo "      file:" "${DIFF_CHANGELOG_FILE_PATH}" >> "${CHANGE_LOG_MASTER}"
+  echo "      relativeToChangelogFile: true" >>  "${CHANGE_LOG_MASTER}"
+}
+
+# this function applies migrations
+applyMigrations() {
+  ./mvnw clean compile
+  ./mvnw liquibase:update
+}
+
+# Read this to know available commands
+# Switch statement to handle user input commands
+######################## commands #########################
+case $command in
+applyMigrations)
+  applyMigrations
+  finish
+  ;;
+makeMigration)
+  makeMigration
+  finish
+  ;;
+*)
+  unknown
+  finish
+  ;;
+esac
