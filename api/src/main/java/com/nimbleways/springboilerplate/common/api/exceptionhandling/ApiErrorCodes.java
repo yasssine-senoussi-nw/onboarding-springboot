@@ -10,7 +10,7 @@ enum ApiErrorCodes {
     INTERNAL_SERVER_ERROR("errors.internal_server_error"),
     MISSING_BODY_ERROR("errors.missing_body"),
     UNAUTHORIZED_ERROR("errors.unauthorized"),
-    USERNAME_ALREADY_EXISTS_ERROR("errors.username_already_exists");
+    EMAIL_ALREADY_EXISTS_ERROR("errors.email_already_exists");
 
     private final String code;
 

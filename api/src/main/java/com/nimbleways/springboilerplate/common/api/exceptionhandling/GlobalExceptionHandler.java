@@ -2,7 +2,7 @@ package com.nimbleways.springboilerplate.common.api.exceptionhandling;
 
 import com.nimbleways.springboilerplate.common.domain.ports.EventPublisherPort;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AbstractAuthenticationDomainException;
-import com.nimbleways.springboilerplate.features.users.domain.exceptions.UsernameAlreadyExistsInRepositoryException;
+import com.nimbleways.springboilerplate.features.users.domain.exceptions.EmailAlreadyExistsInRepositoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -30,10 +30,10 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
         return getDefaultResponseEntity(ex, request, HttpStatus.UNAUTHORIZED, ApiErrorCodes.UNAUTHORIZED_ERROR);
     }
 
-    @ExceptionHandler({UsernameAlreadyExistsInRepositoryException.class})
+    @ExceptionHandler({EmailAlreadyExistsInRepositoryException.class})
     @Nullable
-    public final ResponseEntity<Object> handleException(UsernameAlreadyExistsInRepositoryException ex, WebRequest request) {
-        return getDefaultResponseEntity(ex, request, HttpStatus.BAD_REQUEST, ApiErrorCodes.USERNAME_ALREADY_EXISTS_ERROR);
+    public final ResponseEntity<Object> handleException(EmailAlreadyExistsInRepositoryException ex, WebRequest request) {
+        return getDefaultResponseEntity(ex, request, HttpStatus.BAD_REQUEST, ApiErrorCodes.EMAIL_ALREADY_EXISTS_ERROR);
     }
 
     @ExceptionHandler({Exception.class})

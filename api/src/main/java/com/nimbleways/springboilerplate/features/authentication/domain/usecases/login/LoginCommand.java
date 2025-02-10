@@ -1,9 +1,9 @@
 package com.nimbleways.springboilerplate.features.authentication.domain.usecases.login;
 
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 
 public record LoginCommand(
-    Username username,
+    Email email,
     String password
 ) {
 }

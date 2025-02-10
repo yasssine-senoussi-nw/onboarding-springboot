@@ -7,7 +7,7 @@ import org.eclipse.collections.api.set.ImmutableSet;
 public record SignupResponse(
     String id,
     String name,
-    String username,
+    String email,
     ImmutableSet<String> roles
 ) {
     public static SignupResponse from(User user) {
@@ -15,7 +15,7 @@ public record SignupResponse(
         return new SignupResponse(
                 user.id().toString(),
                 user.name(),
-                user.username().value(),
+                user.email().value(),
                 userRoles
         );
     }

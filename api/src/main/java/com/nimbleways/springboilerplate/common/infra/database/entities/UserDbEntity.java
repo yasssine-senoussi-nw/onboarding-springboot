@@ -1,8 +1,8 @@
 package com.nimbleways.springboilerplate.common.infra.database.entities;
 
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.EncodedPassword;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
 import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserCredential;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserPrincipal;
@@ -38,9 +38,9 @@ public class UserDbEntity {
     @NotNull
     private UUID id;
 
-    @Column(name = "username", unique = true)
+    @Column(name = "email", unique = true)
     @NotNull
-    private String username;
+    private String email;
 
     @Column(name = "password")
     @NotNull
@@ -70,7 +70,7 @@ public class UserDbEntity {
         List<RoleDbEntity> roles = newUser.roles().stream().map(RoleDbEntity::newFromRole).toList();
         final UserDbEntity userDbEntity = new UserDbEntity();
         userDbEntity.name(newUser.name());
-        userDbEntity.username(newUser.username().value());
+        userDbEntity.email(newUser.email().value());
         userDbEntity.password(newUser.encodedPassword().value());
         userDbEntity.createdAt(newUser.creationDateTime());
         userDbEntity.roles(roles);
@@ -81,7 +81,7 @@ public class UserDbEntity {
         return new User(
                 id,
                 name,
-                new Username(username),
+                new Email(email),
                 createdAt,
                 getRoles()
         );
@@ -90,7 +90,7 @@ public class UserDbEntity {
     public UserPrincipal toUserPrincipal() {
         return new UserPrincipal(
                 id,
-                new Username(username),
+                new Email(email),
                 getRoles()
         );
     }

@@ -9,7 +9,7 @@ public final class GetUsersResponse extends ArrayList<Item> {
     public record Item(
         String id,
         String name,
-        String username
+        String email
     ) {}
 
     public static GetUsersResponse from(ImmutableList<User> users) {
@@ -28,7 +28,7 @@ public final class GetUsersResponse extends ArrayList<Item> {
         return new Item(
             user.id().toString(),
             user.name(),
-            user.username().value()
+            user.email().value()
         );
     }
 }
