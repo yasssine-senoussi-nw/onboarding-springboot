@@ -25,7 +25,7 @@ public class FakeUserSessionRepository implements UserSessionRepositoryPort {
     public void create(UserSession userSession) {
         if (sessionTable.containsKey(userSession.refreshToken())) {
             throw new CannotCreateUserSessionInRepositoryException(
-                userSession.userPrincipal().username(),
+                userSession.userPrincipal().email(),
                 new DataIntegrityViolationException(
                     String.format("RefreshToken '%s' already exist in repository",
                         userSession.refreshToken().value())
@@ -33,7 +33,7 @@ public class FakeUserSessionRepository implements UserSessionRepositoryPort {
         }
         if (!userRepository.userIdExists(userSession.userPrincipal().id())) {
             throw new CannotCreateUserSessionInRepositoryException(
-                userSession.userPrincipal().username(),
+                userSession.userPrincipal().email(),
                 new DataIntegrityViolationException(
                     String.format("User ID '%s' not found in repository",
                         userSession.userPrincipal().id())

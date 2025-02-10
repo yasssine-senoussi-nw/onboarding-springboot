@@ -2,16 +2,16 @@ package com.nimbleways.springboilerplate.common.api.exceptionhandling;
 
 import com.nimbleways.springboilerplate.common.api.exceptionhandling.GlobalExceptionHandlerIntegrationTests.InMemoryEventListener;
 import com.nimbleways.springboilerplate.common.api.events.UnhandledExceptionEvent;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AccessTokenDecodingException;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.BadUserCredentialException;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.CannotCreateUserSessionInRepositoryException;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.RefreshAndAccessTokensMismatchException;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.RefreshTokenExpiredOrNotFoundException;
-import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.UnknownUsernameException;
+import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.UnknownEmailException;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.AccessToken;
-import com.nimbleways.springboilerplate.features.users.domain.exceptions.UsernameAlreadyExistsInRepositoryException;
+import com.nimbleways.springboilerplate.features.users.domain.exceptions.EmailAlreadyExistsInRepositoryException;
 import com.nimbleways.springboilerplate.testhelpers.BaseWebMvcIntegrationTests;
 import com.nimbleways.springboilerplate.testhelpers.utils.ClassFinder;
 import java.util.List;
@@ -217,15 +217,15 @@ class GlobalExceptionHandlerIntegrationTests extends BaseWebMvcIntegrationTests 
                 HttpStatus.UNAUTHORIZED, unauthorizedJsonResponse),
 
             Arguments.of(
-                new BadUserCredentialException(new Username("")),
+                new BadUserCredentialException(new Email("")),
                 HttpStatus.UNAUTHORIZED, unauthorizedJsonResponse),
 
             Arguments.of(
-                new UsernameAlreadyExistsInRepositoryException(
-                    new Username(""), new DataIntegrityViolationException("")),
+                new EmailAlreadyExistsInRepositoryException(
+                    new Email(""), new DataIntegrityViolationException("")),
                 HttpStatus.BAD_REQUEST, """
-                {"type":"about:blank","title":"errors.username_already_exists","status":400,
-                "detail":"errors.username_already_exists","instance":"/exception-handling/throw"}"""),
+                {"type":"about:blank","title":"errors.email_already_exists","status":400,
+                "detail":"errors.email_already_exists","instance":"/exception-handling/throw"}"""),
 
             Arguments.of(
                 new RefreshAndAccessTokensMismatchException(UUID.randomUUID(), UUID.randomUUID()),
@@ -236,12 +236,12 @@ class GlobalExceptionHandlerIntegrationTests extends BaseWebMvcIntegrationTests 
                 HttpStatus.UNAUTHORIZED, unauthorizedJsonResponse),
 
             Arguments.of(
-                new UnknownUsernameException(new Username("")),
+                new UnknownEmailException(new Email("")),
                 HttpStatus.UNAUTHORIZED, unauthorizedJsonResponse),
 
             Arguments.of(
                 new CannotCreateUserSessionInRepositoryException(
-                    new Username(""),
+                    new Email(""),
                     new DataIntegrityViolationException("")),
                 HttpStatus.INTERNAL_SERVER_ERROR, internalServerErrorJsonResponse)
         );

@@ -5,8 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
 import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
 import com.nimbleways.springboilerplate.testhelpers.BaseWebMvcIntegrationTests;
@@ -28,8 +28,8 @@ class GetUsersEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
     @Test
     void testGetUsersEndpoint() throws Exception {
         // GIVEN
-        User user1 = getUser("user1", "username1", Immutable.set.of(Role.ADMIN));
-        User user2 = getUser("user2", "username2", Immutable.set.of());
+        User user1 = getUser("user1", "email1@test.com", Immutable.set.of(Role.ADMIN));
+        User user2 = getUser("user2", "email2@test.com", Immutable.set.of());
 
         // WHEN
         mockMvc
@@ -40,8 +40,8 @@ class GetUsersEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
         // THEN
             .andExpect(status().isOk())
             .andExpect(content().json(String.format("""
-                [{"id":"%s","username":"username1","name":"user1"},
-                {"id":"%s","username":"username2","name":"user2"}]""",
+                [{"id":"%s","email":"email1@test.com","name":"user1"},
+                {"id":"%s","email":"email2@test.com","name":"user2"}]""",
                 user1.id().toString(), user2.id().toString())));
     }
 
@@ -55,11 +55,11 @@ class GetUsersEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
             .andExpect(status().isForbidden());
     }
 
-    private User getUser(String name, String username, ImmutableSet<Role> roles) {
+    private User getUser(String name, String email, ImmutableSet<Role> roles) {
         return getUsersSut.userRepository().create(
             aNewUser()
                 .withName(name)
-                .withUsername(new Username(username))
+                .withEmail(new Email(email))
                 .withRoles(roles)
                 .build()
         );

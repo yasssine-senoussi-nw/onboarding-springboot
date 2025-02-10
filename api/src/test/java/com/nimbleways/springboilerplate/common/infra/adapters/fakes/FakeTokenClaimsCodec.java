@@ -93,7 +93,7 @@ public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
             .stream().map(RoleMapper.INSTANCE::fromValueObject).toList();
         String subject = String.format("%s,%s",
             tokenClaims.userPrincipal().id(),
-            tokenClaims.userPrincipal().username().value()
+            tokenClaims.userPrincipal().email().value()
         );
         return Jwt.withTokenValue(token)
             .header("alg", "none")

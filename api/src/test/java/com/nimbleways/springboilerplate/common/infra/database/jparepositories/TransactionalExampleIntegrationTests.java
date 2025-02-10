@@ -78,11 +78,11 @@ class TransactionalExampleIntegrationTests {
     }
 
     @NotNull
-    private UserDbEntity createUser(String username, String password) {
+    private UserDbEntity createUser(String email, String password) {
         UserDbEntity user = new UserDbEntity();
-        user.username(username);
+        user.email(email);
         user.password(password);
-        user.name(username);
+        user.name(email);
         user.createdAt(Instant.now());
         return user;
     }

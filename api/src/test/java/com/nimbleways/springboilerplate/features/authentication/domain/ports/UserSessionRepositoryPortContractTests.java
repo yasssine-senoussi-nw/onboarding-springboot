@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.infra.adapters.TimeProvider;
 import com.nimbleways.springboilerplate.common.utils.collections.Mutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserSession;
@@ -50,7 +50,7 @@ public abstract class UserSessionRepositoryPortContractTests {
             () -> userSessionRepository.create(userSession));
 
         assertEquals(CannotCreateUserSessionInRepositoryException.class, exception.getClass());
-        assertEquals("Cannot create UserSession in repository for user 'username'", exception.getMessage());
+        assertEquals("Cannot create UserSession in repository for email 'email@test.com'", exception.getMessage());
     }
 
     @Test
@@ -65,7 +65,7 @@ public abstract class UserSessionRepositoryPortContractTests {
 
     @Test
     void creating_a_usersession_with_an_existing_refreshtoken_throws_CannotCreateUserSessionInRepositoryException() {
-        User user = userRepository.create(aNewUser().withUsername(new Username("username")).build());
+        User user = userRepository.create(aNewUser().withEmail(new Email("email@test.com")).build());
         UserSession userSession = newUserSession(user, timeProvider.instant());
         userSessionRepository.create(userSession);
 
@@ -73,7 +73,7 @@ public abstract class UserSessionRepositoryPortContractTests {
             () -> userSessionRepository.create(userSession));
 
         assertEquals(CannotCreateUserSessionInRepositoryException.class, exception.getClass());
-        assertEquals("Cannot create UserSession in repository for user 'username'", exception.getMessage());
+        assertEquals("Cannot create UserSession in repository for email 'email@test.com'", exception.getMessage());
     }
 
     @Test
