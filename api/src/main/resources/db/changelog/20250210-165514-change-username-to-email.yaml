@@ -1,0 +1,36 @@
+databaseChangeLog:
+- changeSet:
+    id: 1739202964005-1
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: email
+            type: VARCHAR(255)
+        tableName: users
+- changeSet:
+    id: 1739202964005-2
+    author: Yassine (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: email
+        constraintName: UC_USERSEMAIL_COL
+        tableName: users
+- changeSet:
+    id: 1739202964005-3
+    author: Yassine (generated)
+    changes:
+    - dropUniqueConstraint:
+        constraintName: uc_usersusername_col
+        tableName: users
+- changeSet:
+    id: 1739202964005-4
+    author: Yassine (generated)
+    changes:
+    - dropColumn:
+        columnName: username
+        tableName: users
+
