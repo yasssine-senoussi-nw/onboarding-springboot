@@ -1,6 +1,6 @@
 package com.nimbleways.springboilerplate.testhelpers.fixtures;
 
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.features.authentication.domain.usecases.login.LoginCommand;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.AccessToken;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.RefreshToken;
@@ -27,6 +27,6 @@ public final class SimpleFixture {
     }
 
     public static LoginCommand aLoginCommand(String password) {
-        return new LoginCommand(new Username("username"), password);
+        return new LoginCommand(new Email("email@test.com"), password);
     }
 }

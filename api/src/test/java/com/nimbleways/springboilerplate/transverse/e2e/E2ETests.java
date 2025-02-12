@@ -14,14 +14,14 @@ class E2ETests extends BaseE2ETests {
     void signup_login_refreshtoken() {
         // ----------- Sign up new user ------------//
         RequestEntity<String> request = post("/auth/signup").body("""
-            {"name":"Name", "username":"username1",
+            {"name":"Name", "email":"email@test.com",
             "password":"password1", "roles":["ADMIN"]}""");
         ResponseEntity<String> response = restTemplate.exchange(request, String.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
         // ----------- login ------------//
         request = post("/auth/login").body("""
-            {"username":"username1", "password":"password1"}""");
+            {"email":"email@test.com", "password":"password1"}""");
         response = restTemplate.exchange(request, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
 

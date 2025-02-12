@@ -18,3 +18,6 @@ databaseChangeLog:
   - include:
       file: changelog/20241229-184755-mark-user-in-usersession-as-nonnull.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changelog/20250210-165514-change-username-to-email.yaml
+      relativeToChangelogFile: true

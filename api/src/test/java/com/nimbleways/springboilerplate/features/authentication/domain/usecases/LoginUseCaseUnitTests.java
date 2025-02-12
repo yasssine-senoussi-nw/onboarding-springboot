@@ -13,7 +13,7 @@ import com.nimbleways.springboilerplate.features.authentication.domain.entities.
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserSession;
 import com.nimbleways.springboilerplate.features.authentication.domain.events.UserLoggedInEvent;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.BadUserCredentialException;
-import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.UnknownUsernameException;
+import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.UnknownEmailException;
 import com.nimbleways.springboilerplate.features.authentication.domain.usecases.login.LoginCommand;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.UserTokens;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
@@ -35,7 +35,7 @@ class LoginUseCaseUnitTests {
     private final LoginSut sut = Instance.create(LoginSut.class);
 
     @Test
-    void returns_user_tokens_when_username_and_password_matches() {
+    void returns_user_tokens_when_email_password_matches() {
         // GIVEN
         LoginCommand loginCommand = aLoginCommand();
         User user = sut.userRepository().create(getUser(loginCommand));
@@ -102,7 +102,7 @@ class LoginUseCaseUnitTests {
     }
 
     @Test
-    void throws_UnknownUsernameException_if_username_not_in_repository() {
+    void throws_UnknownEmailException_if_email_not_in_repository() {
         // GIVEN
         LoginCommand loginCommand = aLoginCommand();
 
@@ -110,8 +110,8 @@ class LoginUseCaseUnitTests {
         Exception ex = assertThrows(Exception.class, () -> sut.handle(loginCommand));
 
         // THEN
-        assertEquals(UnknownUsernameException.class, ex.getClass());
-        assertEquals("Username not found: username", ex.getMessage());
+        assertEquals(UnknownEmailException.class, ex.getClass());
+        assertEquals("Email not found: email@test.com", ex.getMessage());
     }
 
     @Test
@@ -125,13 +125,13 @@ class LoginUseCaseUnitTests {
 
         // THEN
         assertEquals(BadUserCredentialException.class, ex.getClass());
-        assertEquals("Bad password provided for username: username", ex.getMessage());
+        assertEquals("Bad password provided for email: email@test.com", ex.getMessage());
     }
 
     @NotNull
     private static NewUser getUser(LoginCommand loginCommand, String password) {
         return aNewUser()
-            .withUsername(loginCommand.username())
+            .withEmail(loginCommand.email())
             .withPlainPassword(password)
             .build();
     }

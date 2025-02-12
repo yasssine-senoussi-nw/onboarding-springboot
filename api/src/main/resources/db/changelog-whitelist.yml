@@ -2,5 +2,7 @@
 whitelisted_files:
   - file: "changelog/20211013125551-create-user-table.yaml"
     explanation: "Example file to ignore"
+  - file: "changelog/20250210-165514-change-username-to-email.yaml"
+    explanation: "We are required to change 'username' column with 'email', the task was to remove 'username' field and use 'email' field instead, so ignore the 'dropColumn' command"
 
 

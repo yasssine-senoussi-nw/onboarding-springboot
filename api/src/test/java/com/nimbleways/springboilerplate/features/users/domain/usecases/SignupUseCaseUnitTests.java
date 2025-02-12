@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.nimbleways.springboilerplate.common.domain.valueobjects.EncodedPassword;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
 import com.nimbleways.springboilerplate.features.users.domain.usecases.signup.SignupCommand;
@@ -64,16 +64,16 @@ class SignupUseCaseUnitTests {
         sut.handle(signupCommand);
 
         // THEN
-        EncodedPassword encodedPassword = getPasswordFromRepository(signupCommand.username());
+        EncodedPassword encodedPassword = getPasswordFromRepository(signupCommand.email());
         boolean passwordMatches = sut.passwordEncoder()
             .matches(signupCommand.plainPassword(), encodedPassword);
         assertTrue(passwordMatches);
     }
 
-    private EncodedPassword getPasswordFromRepository(Username username) {
+    private EncodedPassword getPasswordFromRepository(Email email) {
         return sut
             .userRepository()
-            .findUserCredentialByUsername(username)
+            .findUserCredentialByEmail(email)
             .orElseThrow()
             .encodedPassword();
     }
@@ -83,7 +83,7 @@ class SignupUseCaseUnitTests {
         return new User(
             UUID.randomUUID(),
             signupCommand.name(),
-            signupCommand.username(),
+            signupCommand.email(),
             sut.timeProvider().instant(),
             signupCommand.roles()
         );
@@ -93,7 +93,7 @@ class SignupUseCaseUnitTests {
     private static SignupCommand createSignupCommand() {
         User inputUser = aUser().withRoles(Immutable.set.of(Role.ADMIN)).build();
         return new SignupCommand(inputUser.name(),
-            inputUser.username(), "password",
+            inputUser.email(), "password",
             inputUser.roles());
     }
 

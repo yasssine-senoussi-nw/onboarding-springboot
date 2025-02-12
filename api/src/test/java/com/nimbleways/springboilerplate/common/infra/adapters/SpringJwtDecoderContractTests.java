@@ -70,7 +70,7 @@ public abstract class SpringJwtDecoderContractTests {
     }
 
     private String getExpectedSubject(UserPrincipal userPrincipal) {
-        return String.format("%s,%s", userPrincipal.id(), userPrincipal.username().value());
+        return String.format("%s,%s", userPrincipal.id(), userPrincipal.email().value());
     }
 
     @NotNull

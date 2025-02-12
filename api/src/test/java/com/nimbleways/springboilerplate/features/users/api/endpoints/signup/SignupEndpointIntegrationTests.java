@@ -28,7 +28,7 @@ class SignupEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
             .perform(post(SIGNUP_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                    {"name":"Name", "username":"Username",
+                    {"name":"Name", "email":"email@test.com",
                     "password":"password", "roles":["ADMIN"]}""")
             )
 
@@ -36,7 +36,7 @@ class SignupEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
             .andExpect(status().isCreated())
             .andExpect(content().json(String.format("""
                     {"id":"%s","name":"Name",
-                    "username":"Username","roles":["ADMIN"]}""", getUserId().toString()))
+                    "email":"email@test.com","roles":["ADMIN"]}""", getUserId().toString()))
             );
     }
 

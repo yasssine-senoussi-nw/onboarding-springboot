@@ -1,13 +1,13 @@
 package com.nimbleways.springboilerplate.common.infra.adapters;
 
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.infra.database.entities.UserDbEntity;
 import com.nimbleways.springboilerplate.common.infra.database.jparepositories.JpaUserRepository;
 import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserCredential;
 import com.nimbleways.springboilerplate.features.authentication.domain.ports.UserCredentialsRepositoryPort;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
-import com.nimbleways.springboilerplate.features.users.domain.exceptions.UsernameAlreadyExistsInRepositoryException;
+import com.nimbleways.springboilerplate.features.users.domain.exceptions.EmailAlreadyExistsInRepositoryException;
 import com.nimbleways.springboilerplate.features.users.domain.ports.UserRepositoryPort;
 import com.nimbleways.springboilerplate.features.users.domain.valueobjects.NewUser;
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class UserRepository implements UserRepositoryPort, UserCredentialsReposi
         try {
             savedUserDbEntity = jpaUserRepository.saveAndFlush(userDbEntity);
         } catch (DataIntegrityViolationException ex) {
-            throw new UsernameAlreadyExistsInRepositoryException(userToCreate.username(), ex);
+            throw new EmailAlreadyExistsInRepositoryException(userToCreate.email(), ex);
         }
         return savedUserDbEntity.toUser();
     }
@@ -42,9 +42,9 @@ public class UserRepository implements UserRepositoryPort, UserCredentialsReposi
 
     @Override
     // TODO: Retrieve from the database only the fields needed for UserCredential
-    public Optional<UserCredential> findUserCredentialByUsername(Username username) {
+    public Optional<UserCredential> findUserCredentialByEmail(Email email) {
         return jpaUserRepository
-            .findByUsername(username.value())
+            .findByEmail(email.value())
             .map(UserDbEntity::toUserCredential);
     }
 }

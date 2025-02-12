@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.testhelpers.BaseWebMvcIntegrationTests;
 import com.nimbleways.springboilerplate.features.authentication.domain.usecases.suts.LoginSut;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class LoginEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
         // GIVEN
         loginSut.userRepository().create(
             aNewUser()
-                .withUsername(new Username("usernameCreated"))
+                .withEmail(new Email("email@test.com"))
                 .withPlainPassword("passwordCreated")
                 .build()
         );
@@ -40,7 +40,7 @@ class LoginEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
                 post(LOGIN_ENDPOINT)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("""
-                        {"username":"usernameCreated", "password":"passwordCreated"}""")
+                        {"email":"email@test.com", "password":"passwordCreated"}""")
             )
 
         // THEN

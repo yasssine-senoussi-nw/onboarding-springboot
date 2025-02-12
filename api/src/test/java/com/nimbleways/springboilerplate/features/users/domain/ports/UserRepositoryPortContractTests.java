@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.nimbleways.springboilerplate.common.domain.valueobjects.Username;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.infra.adapters.TimeProvider;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserCredential;
 import com.nimbleways.springboilerplate.features.authentication.domain.ports.UserCredentialsRepositoryPort;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
-import com.nimbleways.springboilerplate.features.users.domain.exceptions.UsernameAlreadyExistsInRepositoryException;
+import com.nimbleways.springboilerplate.features.users.domain.exceptions.EmailAlreadyExistsInRepositoryException;
 import com.nimbleways.springboilerplate.features.users.domain.valueobjects.NewUser;
 import com.nimbleways.springboilerplate.testhelpers.fixtures.NewUserFixture;
 import com.nimbleways.springboilerplate.testhelpers.fixtures.NewUserFixture.Builder;
@@ -37,7 +37,7 @@ public abstract class UserRepositoryPortContractTests {
 
         userRepository.create(newUser);
 
-        NewUser newUserFromDb = reconstructNewUserFromDb(newUser.username());
+        NewUser newUserFromDb = reconstructNewUserFromDb(newUser.email());
         assertEquals(newUser, newUserFromDb);
     }
 
@@ -51,16 +51,16 @@ public abstract class UserRepositoryPortContractTests {
     }
 
     @Test
-    void creating_a_new_user_with_an_existing_username_throws_UserAlreadyExistsInRepositoryException() {
-        NewUser firstNewUser = aNewUser().withUsername(new Username("username")).build();
-        NewUser secondNewUser = aNewUser().withUsername(new Username("username")).build();
+    void creating_a_new_user_with_an_existing_email_throws_UserAlreadyExistsInRepositoryException() {
+        NewUser firstNewUser = aNewUser().withEmail(new Email("email@test.com")).build();
+        NewUser secondNewUser = aNewUser().withEmail(new Email("email@test.com")).build();
         userRepository.create(firstNewUser);
 
         Exception exception = assertThrows(Exception.class,
             () -> userRepository.create(secondNewUser));
 
-        assertEquals(UsernameAlreadyExistsInRepositoryException.class, exception.getClass());
-        assertEquals("Username 'username' already exist in repository", exception.getMessage());
+        assertEquals(EmailAlreadyExistsInRepositoryException.class, exception.getClass());
+        assertEquals("Email 'email@test.com' already exist in repository", exception.getMessage());
     }
 
     @NotNull
@@ -69,14 +69,14 @@ public abstract class UserRepositoryPortContractTests {
     }
 
     @NotNull
-    private NewUser reconstructNewUserFromDb(Username username) {
+    private NewUser reconstructNewUserFromDb(Email email) {
         Optional<UserCredential> userCredential = userCredentialsRepositoryPort
-            .findUserCredentialByUsername(username);
+            .findUserCredentialByEmail(email);
         assertTrue(userCredential.isPresent());
         User user = userRepository.findAll().get(0);
         return new NewUser(
             user.name(),
-            user.username(),
+            user.email(),
             userCredential.get().encodedPassword(),
             user.createdAt(),
             user.roles()
