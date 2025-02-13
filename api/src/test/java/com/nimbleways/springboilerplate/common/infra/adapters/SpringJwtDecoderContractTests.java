@@ -8,7 +8,6 @@ import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 import com.nimbleways.springboilerplate.common.infra.adapters.fakes.FakeTokenClaimsCodec;
 import com.nimbleways.springboilerplate.common.infra.properties.JwtProperties;
-import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.TokenClaims;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserPrincipal;
 import com.nimbleways.springboilerplate.testhelpers.annotations.IntegrationTest;
