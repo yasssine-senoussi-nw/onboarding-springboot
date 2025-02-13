@@ -1,0 +1,73 @@
+databaseChangeLog:
+- changeSet:
+    id: 1739371689705-4
+    author: Yassine (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: user_role
+        constraintName: FKj345gk1bovqvfame88rcx7yyx
+- changeSet:
+    id: 1739371689705-5
+    author: Yassine (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: user_role
+        constraintName: FKt7e7djp752sqn6w22i6ocqy6q
+- changeSet:
+    id: 1739371689705-1
+    author: Yassine (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: rolePK
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: role_name
+            type: VARCHAR(255)
+        tableName: role
+- changeSet:
+    id: 1739371689705-2
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: role_id
+            type: BIGINT
+        tableName: users
+- changeSet:
+    id: 1739371689705-3
+    author: Yassine (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: role_id
+        baseTableName: users
+        constraintName: FK4qu1gr772nnf6ve5af002rwya
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: role
+        validate: true
+- changeSet:
+    id: 1739371689705-6
+    author: Yassine (generated)
+    changes:
+    - dropTable:
+        tableName: roles
+- changeSet:
+    id: 1739371689705-7
+    author: Yassine (generated)
+    changes:
+    - dropTable:
+        tableName: user_role
+

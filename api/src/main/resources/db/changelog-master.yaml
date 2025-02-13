@@ -21,3 +21,6 @@ databaseChangeLog:
   - include:
       file: changelog/20250210-165514-change-username-to-email.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changelog/20250212-144740-convert-roles-to-role.yaml
+      relativeToChangelogFile: true
