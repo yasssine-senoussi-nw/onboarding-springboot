@@ -29,7 +29,7 @@ public class FakeUserRepository implements UserRepositoryPort, UserCredentialsRe
         }
         User user = new User(UUID.randomUUID(), userToCreate.name(), userToCreate.email(),
             userToCreate.creationDateTime(),
-            userToCreate.roles());
+            userToCreate.role());
         userTable.put(user.email(), new UserWithPassword(user, userToCreate.encodedPassword()));
         return user;
     }

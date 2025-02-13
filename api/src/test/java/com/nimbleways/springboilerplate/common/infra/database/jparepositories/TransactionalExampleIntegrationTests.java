@@ -2,6 +2,8 @@ package com.nimbleways.springboilerplate.common.infra.database.jparepositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
+import com.nimbleways.springboilerplate.common.infra.database.entities.RoleDbEntity;
 import com.nimbleways.springboilerplate.common.infra.database.entities.UserDbEntity;
 import com.nimbleways.springboilerplate.testhelpers.annotations.SetupDatabase;
 import java.time.Instant;
@@ -84,6 +86,7 @@ class TransactionalExampleIntegrationTests {
         user.password(password);
         user.name(email);
         user.createdAt(Instant.now());
+        user.role(RoleDbEntity.newFromRole(Role.USER));
         return user;
     }
 }

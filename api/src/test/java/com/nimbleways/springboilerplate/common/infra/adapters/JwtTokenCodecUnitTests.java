@@ -28,19 +28,19 @@ public class JwtTokenCodecUnitTests extends TokenClaimsCodecPortContractTests {
     }
 
     @Override
-    protected AccessToken getTokenWithoutRoles() {
+    protected AccessToken getTokenWithoutRole() {
         return new AccessToken(
             "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjZmNkMjA4NDk1ZDUzNWVmYTZlN2RmZjlmOTg3NjRkYSIsInN1YiI6IjIzYTBiYTcyLWE3NzUtNGVmZS1iN2EwLTgyMTViMDViYzIyOSx1c2VybmFtZSIsImlzcyI6Im15YXBwIiwiaWF0IjoxNzA5MjI2OTcwLCJleHAiOjE3MDkyMjY5NzF9.kv9KtJkciWIhiexl6Ylx3gnaezOHVDY6ixIaVROVqDg");
     }
 
     @Override
-    protected AccessToken getTokenWithInvalidRolesArrayClaim() {
+    protected AccessToken getTokenWithInvalidRoleArrayClaim() {
         return new AccessToken(
             "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjZmNkMjA4NDk1ZDUzNWVmYTZlN2RmZjlmOTg3NjRkYSIsInN1YiI6IjFmMTU3ZGMyLWMzZDEtNDFkNC04OGQwLTk3M2NjNWExNThkMCx1c2VybmFtZSIsImlzcyI6Im15YXBwIiwiaWF0IjoxNzA5MjI3MTQxLCJleHAiOjE3MDkyMjcxNDIsInNjb3BlIjpbMSwyLDNdfQ.3AY7vsJzUkzh5fNoP0_y9oUEDp6z1yEHvFnCvwLzyao");
     }
 
     @Override
-    protected AccessToken getTokenWithInvalidRolesScalarClaim() {
+    protected AccessToken getTokenWithInvalidRoleScalarClaim() {
         return new AccessToken(
             "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjZmNkMjA4NDk1ZDUzNWVmYTZlN2RmZjlmOTg3NjRkYSIsInN1YiI6ImJkNTAzNzc4LTgxMjMtNDZiMy05MjA4LTE4ZGI0YzdhYWNmOCx1c2VybmFtZSIsImlzcyI6Im15YXBwIiwiaWF0IjoxNzA5MjI3MTk5LCJleHAiOjE3MDkyMjcyMDAsInNjb3BlIjoxMH0.duOIIRK8XcvMMwcmJC6-Nvads-aOQ8zVi_Y_rVzImvA");
     }

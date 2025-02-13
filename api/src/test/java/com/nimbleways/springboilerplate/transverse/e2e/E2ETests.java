@@ -15,7 +15,7 @@ class E2ETests extends BaseE2ETests {
         // ----------- Sign up new user ------------//
         RequestEntity<String> request = post("/auth/signup").body("""
             {"name":"Name", "email":"email@test.com",
-            "password":"password1", "roles":["ADMIN"]}""");
+            "password":"password1", "role":"ADMIN"}""");
         ResponseEntity<String> response = restTemplate.exchange(request, String.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 

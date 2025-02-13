@@ -46,7 +46,7 @@ public abstract class SpringJwtDecoderContractTests {
 
         assertEquals(claims.expirationTime(), jwt.getExpiresAt());
         assertEquals(claims.creationTime(), jwt.getIssuedAt());
-        assertEquals(List.of("USER"), jwt.getClaim("scope"));
+        assertEquals("USER", jwt.getClaim("scope"));
         assertEquals(getExpectedSubject(claims.userPrincipal()), jwt.getSubject());
     }
 
@@ -76,7 +76,7 @@ public abstract class SpringJwtDecoderContractTests {
     @NotNull
     private TokenClaims getTokenClaims(Instant expirationTime) {
         return new TokenClaims(
-            aUserPrincipal().withRoles(Immutable.set.of(Role.USER)).build(),
+            aUserPrincipal().withRole(Role.USER).build(),
             adjustPrecision(expirationTime.minusSeconds(1)),
             adjustPrecision(expirationTime)
         );

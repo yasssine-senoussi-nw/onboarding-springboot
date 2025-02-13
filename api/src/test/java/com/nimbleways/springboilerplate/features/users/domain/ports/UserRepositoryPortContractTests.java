@@ -79,7 +79,7 @@ public abstract class UserRepositoryPortContractTests {
             user.email(),
             userCredential.get().encodedPassword(),
             user.createdAt(),
-            user.roles()
+            user.role()
         );
     }
 

@@ -11,7 +11,6 @@ import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
 import com.nimbleways.springboilerplate.testhelpers.BaseWebMvcIntegrationTests;
 import com.nimbleways.springboilerplate.features.users.domain.usecases.suts.GetUsersSut;
-import org.eclipse.collections.api.set.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,8 +27,8 @@ class GetUsersEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
     @Test
     void testGetUsersEndpoint() throws Exception {
         // GIVEN
-        User user1 = getUser("user1", "email1@test.com", Immutable.set.of(Role.ADMIN));
-        User user2 = getUser("user2", "email2@test.com", Immutable.set.of());
+        User user1 = getUser("user1", "email1@test.com", Role.ADMIN);
+        User user2 = getUser("user2", "email2@test.com", Role.USER);
 
         // WHEN
         mockMvc
@@ -55,12 +54,12 @@ class GetUsersEndpointIntegrationTests extends BaseWebMvcIntegrationTests {
             .andExpect(status().isForbidden());
     }
 
-    private User getUser(String name, String email, ImmutableSet<Role> roles) {
+    private User getUser(String name, String email, Role role) {
         return getUsersSut.userRepository().create(
             aNewUser()
                 .withName(name)
                 .withEmail(new Email(email))
-                .withRoles(roles)
+                .withRole(role)
                 .build()
         );
     }

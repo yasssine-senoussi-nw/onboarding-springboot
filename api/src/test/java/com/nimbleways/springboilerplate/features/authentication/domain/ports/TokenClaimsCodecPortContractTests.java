@@ -73,8 +73,8 @@ public abstract class TokenClaimsCodecPortContractTests {
     }
 
     @Test
-    void decoding_an_accesstoken_without_roles_throws_AccessTokenDecodingException() {
-        AccessToken token = getTokenWithoutRoles();
+    void decoding_an_accesstoken_without_role_throws_AccessTokenDecodingException() {
+        AccessToken token = getTokenWithoutRole();
 
         Exception exception = assertThrows(Exception.class,
             () -> tokenCodec.decodeWithoutExpirationValidation(token));
@@ -84,8 +84,8 @@ public abstract class TokenClaimsCodecPortContractTests {
     }
 
     @Test
-    void decoding_an_accesstoken_with_invalid_roles_array_claim_throws_AccessTokenDecodingException() {
-        AccessToken token = getTokenWithInvalidRolesArrayClaim();
+    void decoding_an_accesstoken_with_invalid_role_array_claim_throws_AccessTokenDecodingException() {
+        AccessToken token = getTokenWithInvalidRoleArrayClaim();
 
         Exception exception = assertThrows(Exception.class,
             () -> tokenCodec.decodeWithoutExpirationValidation(token));
@@ -95,8 +95,8 @@ public abstract class TokenClaimsCodecPortContractTests {
     }
 
     @Test
-    void decoding_an_accesstoken_with_invalid_roles_scalar_claim_throws_AccessTokenDecodingException() {
-        AccessToken token = getTokenWithInvalidRolesScalarClaim();
+    void decoding_an_accesstoken_with_invalid_role_scalar_claim_throws_AccessTokenDecodingException() {
+        AccessToken token = getTokenWithInvalidRoleScalarClaim();
 
         Exception exception = assertThrows(Exception.class,
             () -> tokenCodec.decodeWithoutExpirationValidation(token));
@@ -109,7 +109,7 @@ public abstract class TokenClaimsCodecPortContractTests {
     private TokenClaims getTokenClaims() {
         Instant now = Instant.now();
         return new TokenClaims(
-            aUserPrincipal().withRoles(Immutable.set.of(Role.USER)).build(),
+            aUserPrincipal().withRole(Role.USER).build(),
             adjustPrecision(now),
             adjustPrecision(now.plusSeconds(1))
         );
@@ -121,7 +121,7 @@ public abstract class TokenClaimsCodecPortContractTests {
     protected Instant adjustPrecision(Instant instant) {
         return instant;
     }
-    protected abstract AccessToken getTokenWithoutRoles();
-    protected abstract AccessToken getTokenWithInvalidRolesArrayClaim();
-    protected abstract AccessToken getTokenWithInvalidRolesScalarClaim();
+    protected abstract AccessToken getTokenWithoutRole();
+    protected abstract AccessToken getTokenWithInvalidRoleArrayClaim();
+    protected abstract AccessToken getTokenWithInvalidRoleScalarClaim();
 }
