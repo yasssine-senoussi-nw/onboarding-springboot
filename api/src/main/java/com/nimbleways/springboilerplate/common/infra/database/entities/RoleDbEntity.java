@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "roles")
+@Table(name = "role")
 public class RoleDbEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

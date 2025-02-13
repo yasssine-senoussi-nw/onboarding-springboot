@@ -26,7 +26,7 @@ public class SignupUseCase {
       public User handle(final SignupCommand signupCommand) {
           EncodedPassword encodedPassword = passwordEncoder.encode(signupCommand.plainPassword());
           Instant creationDateTime = timeProvider.instant();
-          // TODO: validate roles and fail if it doesn't exist in the repository
+          // TODO: validate role and fail if it doesn't exist in the repository
           final NewUser newUser = signupCommand.toNewUser(encodedPassword, creationDateTime);
           return userRepository.create(newUser);
       }

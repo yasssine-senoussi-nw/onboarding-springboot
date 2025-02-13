@@ -5,13 +5,12 @@ import com.nimbleways.springboilerplate.common.domain.valueobjects.EncodedPasswo
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 
 import java.time.Instant;
-import org.eclipse.collections.api.set.ImmutableSet;
 
 public record NewUser(
         String name,
         Email email,
         EncodedPassword encodedPassword,
         Instant creationDateTime,
-        ImmutableSet<Role> roles
+        Role role
 ){
 }

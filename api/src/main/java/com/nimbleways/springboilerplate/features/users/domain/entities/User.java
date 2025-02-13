@@ -5,13 +5,12 @@ import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 
 import java.time.Instant;
 import java.util.UUID;
-import org.eclipse.collections.api.set.ImmutableSet;
 
 public record User(
         UUID id,
         String name,
         Email email,
         Instant createdAt,
-        ImmutableSet<Role> roles
+        Role role
 ){
 }
