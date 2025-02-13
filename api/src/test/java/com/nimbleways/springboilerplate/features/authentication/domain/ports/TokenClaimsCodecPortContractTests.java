@@ -4,7 +4,6 @@ import static com.nimbleways.springboilerplate.testhelpers.fixtures.UserPrincipa
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
-import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.TokenClaims;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AccessTokenDecodingException;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.AccessToken;
