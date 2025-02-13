@@ -3,7 +3,6 @@ package com.nimbleways.springboilerplate.common.infra.database.entities;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.EncodedPassword;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
-import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserCredential;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserPrincipal;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
@@ -15,13 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.eclipse.collections.api.set.ImmutableSet;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("PMD.ExcessiveImports")
@@ -58,6 +55,10 @@ public class UserDbEntity {
     @NotNull
     private Instant createdAt;
 
+    @ManyToOne(cascade={CascadeType.ALL})
+    @NotNull
+    private RoleDbEntity role;
+
     @ManyToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
     @JoinTable(
             name="user_role",
@@ -67,13 +68,13 @@ public class UserDbEntity {
     private Collection<RoleDbEntity> roles = new ArrayList<>();
 
     public static UserDbEntity from(NewUser newUser) {
-        List<RoleDbEntity> roles = newUser.roles().stream().map(RoleDbEntity::newFromRole).toList();
+        RoleDbEntity role = RoleDbEntity.newFromRole(newUser.role());
         final UserDbEntity userDbEntity = new UserDbEntity();
         userDbEntity.name(newUser.name());
         userDbEntity.email(newUser.email().value());
         userDbEntity.password(newUser.encodedPassword().value());
         userDbEntity.createdAt(newUser.creationDateTime());
-        userDbEntity.roles(roles);
+        userDbEntity.role(role);
         return userDbEntity;
     }
 
@@ -83,7 +84,7 @@ public class UserDbEntity {
                 name,
                 new Email(email),
                 createdAt,
-                getRoles()
+                getRole()
         );
     }
 
@@ -91,7 +92,7 @@ public class UserDbEntity {
         return new UserPrincipal(
                 id,
                 new Email(email),
-                getRoles()
+                getRole()
         );
     }
 
@@ -100,7 +101,7 @@ public class UserDbEntity {
     }
 
     @NotNull
-    private ImmutableSet<Role> getRoles() {
-        return Immutable.collectSet(roles, RoleDbEntity::toRole);
+    private Role getRole() {
+        return role.toRole();
     }
 }
