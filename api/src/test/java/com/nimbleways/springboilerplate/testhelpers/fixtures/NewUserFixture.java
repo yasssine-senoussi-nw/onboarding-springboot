@@ -5,14 +5,12 @@ import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 import com.nimbleways.springboilerplate.common.infra.adapters.fakes.FakePasswordEncoder;
-import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.users.domain.valueobjects.NewUser;
 import com.nimbleways.springboilerplate.testhelpers.configurations.TimeTestConfiguration;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.With;
-import org.eclipse.collections.api.set.ImmutableSet;
 import org.jetbrains.annotations.NotNull;
 
 public class NewUserFixture {
@@ -30,7 +28,7 @@ public class NewUserFixture {
         private String name = "name-" + id;
         private Email email = new Email("email-" + id + "@test.com");
         private String plainPassword = "password-" + id;
-        private ImmutableSet<Role> roles = Immutable.set.of();
+        private Role role = Role.USER;
         private TimeProviderPort timeProvider = TimeTestConfiguration.fixedTimeProvider();
         private PasswordEncoderPort passwordEncoder = FakePasswordEncoder.INSTANCE;
 
@@ -41,7 +39,7 @@ public class NewUserFixture {
                     email,
                 passwordEncoder.encode(plainPassword),
                 timeProvider.instant(),
-                roles);
+                role);
         }
     }
 }

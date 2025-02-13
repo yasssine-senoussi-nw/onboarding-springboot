@@ -50,7 +50,7 @@ public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
         } catch (MismatchedInputException | JsonParseException exception) {
             throw new AccessTokenDecodingException(exception, token);
         }
-        if (claimWrapper.tokenClaims.userPrincipal().roles() == null) {
+        if (claimWrapper.tokenClaims.userPrincipal().role() == null) {
             throw new AccessTokenDecodingException("missing claim 'scope'", token);
         }
         return claimWrapper.tokenClaims();
@@ -89,15 +89,14 @@ public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
             throw new JwtValidationException("", List.of(new OAuth2Error("invalid_token")));
         }
 
-        List<String> roles = tokenClaims.userPrincipal().roles()
-            .stream().map(RoleMapper.INSTANCE::fromValueObject).toList();
+        String role = RoleMapper.INSTANCE.fromValueObject(tokenClaims.userPrincipal().role());
         String subject = String.format("%s,%s",
             tokenClaims.userPrincipal().id(),
             tokenClaims.userPrincipal().email().value()
         );
         return Jwt.withTokenValue(token)
             .header("alg", "none")
-            .claim("scope", roles)
+            .claim("scope", role)
             .expiresAt(tokenClaims.expirationTime())
             .issuedAt(tokenClaims.creationTime())
             .subject(subject)

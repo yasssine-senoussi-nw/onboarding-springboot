@@ -51,7 +51,7 @@ class SignupUseCaseUnitTests {
         // THEN
         assertThat(user)
             .usingRecursiveComparison()
-            .ignoringFields("id", "roles.id")
+            .ignoringFields("id", "role.id")
             .isEqualTo(expectedUser);
     }
 
@@ -85,16 +85,16 @@ class SignupUseCaseUnitTests {
             signupCommand.name(),
             signupCommand.email(),
             sut.timeProvider().instant(),
-            signupCommand.roles()
+            signupCommand.role()
         );
     }
 
     @NotNull
     private static SignupCommand createSignupCommand() {
-        User inputUser = aUser().withRoles(Immutable.set.of(Role.ADMIN)).build();
+        User inputUser = aUser().withRole(Role.ADMIN).build();
         return new SignupCommand(inputUser.name(),
             inputUser.email(), "password",
-            inputUser.roles());
+            inputUser.role());
     }
 
 }
