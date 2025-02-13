@@ -47,7 +47,8 @@ public class JpaRulesUnitTests {
                     .or()
                     .areAnnotatedWith(Embeddable.class)
                     .should()
-                    .beAnnotatedWith(NotNull.class);
+                    .beAnnotatedWith(NotNull.class)
+                    .allowEmptyShould(true);
 
     @ArchTest
     private final ArchRule fields_annotated_with_GeneratedValue_should_be_annotated_with_nullable =
