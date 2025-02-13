@@ -138,7 +138,7 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
         if (roleClaim == null) {
             throw new AccessTokenDecodingException("missing claim 'scope'", token);
         }
-        if (roleClaim instanceof String role && !role.isEmpty()) {
+        if (roleClaim instanceof String role) {
             return RoleMapper.INSTANCE.toValueObject(role);
         }
         throw new AccessTokenDecodingException(
