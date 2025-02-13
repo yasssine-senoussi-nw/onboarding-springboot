@@ -17,8 +17,6 @@ import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.UUID;
 
 @SuppressWarnings("PMD.ExcessiveImports")
@@ -58,14 +56,6 @@ public class UserDbEntity {
     @ManyToOne(cascade={CascadeType.ALL})
     @NotNull
     private RoleDbEntity role;
-
-    @ManyToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
-    @JoinTable(
-            name="user_role",
-            joinColumns = @JoinColumn( name= "user_id"),
-            inverseJoinColumns = @JoinColumn( name = "role_id"))
-    @NotNull
-    private Collection<RoleDbEntity> roles = new ArrayList<>();
 
     public static UserDbEntity from(NewUser newUser) {
         RoleDbEntity role = RoleDbEntity.newFromRole(newUser.role());

@@ -1,20 +1,20 @@
 databaseChangeLog:
 - changeSet:
-    id: 1739371689705-4
+    id: 1739443391915-4
     author: Yassine (generated)
     changes:
     - dropForeignKeyConstraint:
         baseTableName: user_role
         constraintName: FKj345gk1bovqvfame88rcx7yyx
 - changeSet:
-    id: 1739371689705-5
+    id: 1739443391915-5
     author: Yassine (generated)
     changes:
     - dropForeignKeyConstraint:
         baseTableName: user_role
         constraintName: FKt7e7djp752sqn6w22i6ocqy6q
 - changeSet:
-    id: 1739371689705-1
+    id: 1739443391915-1
     author: Yassine (generated)
     changes:
     - createTable:
@@ -34,7 +34,7 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: role
 - changeSet:
-    id: 1739371689705-2
+    id: 1739443391915-2
     author: Yassine (generated)
     changes:
     - addColumn:
@@ -46,7 +46,7 @@ databaseChangeLog:
             type: BIGINT
         tableName: users
 - changeSet:
-    id: 1739371689705-3
+    id: 1739443391915-3
     author: Yassine (generated)
     changes:
     - addForeignKeyConstraint:
@@ -59,13 +59,13 @@ databaseChangeLog:
         referencedTableName: role
         validate: true
 - changeSet:
-    id: 1739371689705-6
+    id: 1739443391915-6
     author: Yassine (generated)
     changes:
     - dropTable:
         tableName: roles
 - changeSet:
-    id: 1739371689705-7
+    id: 1739443391915-7
     author: Yassine (generated)
     changes:
     - dropTable:
