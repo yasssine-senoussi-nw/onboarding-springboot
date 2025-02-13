@@ -4,6 +4,6 @@ whitelisted_files:
     explanation: "Example file to ignore"
   - file: "changelog/20250210-165514-change-username-to-email.yaml"
     explanation: "We are required to change 'username' column with 'email', the task was to remove 'username' field and use 'email' field instead, so ignore the 'dropColumn' command"
-  - file: "changelog/20250212-144740-convert-roles-to-role.yaml"
+  - file: "changelog/20250213-104218-convert-roles-to-role.yaml"
     explanation: "We are required to change 'roles' table to 'role' table, the task was to remove 'roles' table and use 'role' table instead, so ignore the 'dropTable' command"
 
