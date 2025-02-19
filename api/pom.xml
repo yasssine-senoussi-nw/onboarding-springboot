@@ -22,7 +22,7 @@
     <liquibase.config.dbport>5432</liquibase.config.dbport>
     <liquibase.config.promptOnNonLocalDatabase>true</liquibase.config.promptOnNonLocalDatabase>
     <project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
-    <checkerframework.version>3.48.4</checkerframework.version>
+    <checkerframework.version>3.49.0</checkerframework.version>
     <liquibase.version>4.31.0</liquibase.version>
 
     <!-- Challenge any change to these values with your TL and/or EM -->
@@ -135,7 +135,7 @@
     <dependency>
       <groupId>com.tngtech.archunit</groupId>
       <artifactId>archunit-junit5</artifactId>
-      <version>1.3.0</version>
+      <version>1.4.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -267,7 +267,7 @@
     <dependency>
       <groupId>cc.jilt</groupId>
       <artifactId>jilt</artifactId>
-      <version>1.6.3</version>
+      <version>1.7</version>
       <scope>provided</scope> <!-- Jilt is not needed at runtime -->
     </dependency>
   </dependencies>
@@ -305,7 +305,7 @@
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
-        <version>1.17.4</version>
+        <version>1.18.1</version>
         <dependencies>
           <dependency>
             <groupId>org.pitest</groupId>
@@ -472,7 +472,7 @@
             <path>
               <groupId>cc.jilt</groupId>
               <artifactId>jilt</artifactId>
-              <version>1.6.3</version>
+              <version>1.7</version>
             </path>
           </annotationProcessorPaths>
           <annotationProcessors>

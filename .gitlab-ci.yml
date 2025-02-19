@@ -68,7 +68,7 @@ report-coverage:
 api:test-migrations:
   stage: tests
   services:
-    - "postgres:17.1@sha256:163763c8afd28cae69035ce84b12d8180179559c747c0701b3cad17818a0dbc5"
+    - "postgres:17.2@sha256:3267c505060a0052e5aa6e5175a7b41ab6b04da2f8c4540fc6e98a37210aa2d3"
   variables:
     POSTGRES_DB: db
     POSTGRES_USER: user
