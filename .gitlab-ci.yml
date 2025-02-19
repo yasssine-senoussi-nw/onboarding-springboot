@@ -24,7 +24,7 @@ stages:
 api:tests:
   stage: tests
   services:
-    - name: docker:dind@sha256:ba55987d5a560d321a148e9e33b9d465b9badf0400c5e3fa06b38c0048062294
+    - name: docker:dind@sha256:aa3df78ecf320f5fafdce71c659f1629e96e9de0968305fe1de670e0ca9176ce
       command: [ "--tls=false" ]
   script:
     - cd api
@@ -87,7 +87,7 @@ api:test-migrations:
 
 owasp_dependency_check:
   image: 
-    name: owasp/dependency-check@sha256:a7f98261bf8fc9fd6ff181238bfa736ea14a62c46aa7d24b38482a6949735a00
+    name: owasp/dependency-check@sha256:60ee7af9cf80ac009761e397b2d4ba5ddbf072c2a0ead1c068dc24dc62155600
     entrypoint: [""]
   stage: tests
   script: 

@@ -46,13 +46,13 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Cache NPM cache
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+        uses: actions/cache@0c907a75c2c80ebcb7f088228285e798b750cf8f # v4
         with:
           path: ${{ env.NPX_CACHE_DIR }}
           key: renovate-${{ env.RENOVATE_NPM_VERSION }}
 
       - name: Cache Renovate base Directory
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+        uses: actions/cache@0c907a75c2c80ebcb7f088228285e798b750cf8f # v4
         with:
           path: ${{ env.RENOVATE_BASE_DIR }}
           key: renovate-base-dir-${{ github.run_id }}-${{ github.run_attempt }}
