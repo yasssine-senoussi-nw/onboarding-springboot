@@ -9,7 +9,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
-      - 5432 # A random available public port will be assigned. To retrieve its value: `docker compose port db 5432`
+      - 5432:5432 # A random available public port will be assigned. To retrieve its value: `docker compose port db 5432`
 
 volumes:
   db_data:
