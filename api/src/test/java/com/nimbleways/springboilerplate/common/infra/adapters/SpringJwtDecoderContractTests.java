@@ -94,7 +94,7 @@ public abstract class SpringJwtDecoderContractTests {
     protected abstract String getMalformedToken();
 
     @NotNull
-    protected TimeProviderPort getTimeProvider() {
+    protected static TimeProviderPort getTimeProvider() {
         return TimeTestConfiguration.fixedTimeProvider();
     }
 

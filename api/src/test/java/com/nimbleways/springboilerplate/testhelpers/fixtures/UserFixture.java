@@ -3,6 +3,7 @@ package com.nimbleways.springboilerplate.testhelpers.fixtures;
 import com.nimbleways.springboilerplate.common.domain.ports.EmploymentDatePort;
 import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Money;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
 import com.nimbleways.springboilerplate.testhelpers.configurations.EmploymentDateTestConfiguration;
@@ -40,7 +41,8 @@ public class UserFixture {
                     userEmail,
                     timeProvider.instant(),
                     employmentDateProvider.getEmploymentDate(userEmail),
-                    role);
+                    role,
+                    new Money(0));
         }
     }
 }
