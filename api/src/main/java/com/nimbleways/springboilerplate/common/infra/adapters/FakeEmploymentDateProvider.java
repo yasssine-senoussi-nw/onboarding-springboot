@@ -11,7 +11,7 @@ import java.time.Instant;
 public class FakeEmploymentDateProvider implements EmploymentDatePort {
 
     private final TimeProviderPort timeProvider;
-    private static final int TIME_LIMIT = 100000;
+    private static final int TIME_LIMIT = 100_000;
 
     public FakeEmploymentDateProvider(final TimeProviderPort timeProvider) {
         this.timeProvider = timeProvider;
