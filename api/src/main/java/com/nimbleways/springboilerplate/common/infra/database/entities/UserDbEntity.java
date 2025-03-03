@@ -2,6 +2,7 @@ package com.nimbleways.springboilerplate.common.infra.database.entities;
 
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.EncodedPassword;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Money;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserCredential;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserPrincipal;
@@ -61,6 +62,8 @@ public class UserDbEntity {
     @NotNull
     private RoleDbEntity role;
 
+    private double balance;
+
     public static UserDbEntity from(NewUser newUser) {
         RoleDbEntity role = RoleDbEntity.newFromRole(newUser.role());
         final UserDbEntity userDbEntity = new UserDbEntity();
@@ -70,6 +73,7 @@ public class UserDbEntity {
         userDbEntity.createdAt(newUser.creationDateTime());
         userDbEntity.employmentDate(newUser.employmentDate());
         userDbEntity.role(role);
+        userDbEntity.balance(0.);
         return userDbEntity;
     }
 
@@ -80,7 +84,8 @@ public class UserDbEntity {
                 new Email(email),
                 createdAt,
                 employmentDate,
-                getRole()
+                getRole(),
+                new Money(balance)
         );
     }
 

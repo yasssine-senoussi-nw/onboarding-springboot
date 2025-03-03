@@ -1,0 +1,14 @@
+databaseChangeLog:
+- changeSet:
+    id: 1741015887961-1
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: balance
+            type: FLOAT(53)
+        tableName: users
+
