@@ -48,6 +48,7 @@ public abstract class UserRepositoryPortContractTests {
         User user = userRepository.create(newUser);
 
         assertEquals(List.of(user), userRepository.findAll());
+        assertEquals(Optional.of(user), userRepository.findByEmail(user.email()));
     }
 
     @Test
@@ -79,6 +80,7 @@ public abstract class UserRepositoryPortContractTests {
             user.email(),
             userCredential.get().encodedPassword(),
             user.createdAt(),
+            user.employmentDate(),
             user.role()
         );
     }

@@ -84,6 +84,7 @@ class SignupUseCaseUnitTests {
             signupCommand.name(),
             signupCommand.email(),
             sut.timeProvider().instant(),
+            sut.employmentDatePort().getEmploymentDate(signupCommand.email()),
             signupCommand.role()
         );
     }

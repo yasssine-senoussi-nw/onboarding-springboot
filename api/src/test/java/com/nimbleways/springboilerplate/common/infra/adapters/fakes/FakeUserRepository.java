@@ -29,6 +29,7 @@ public class FakeUserRepository implements UserRepositoryPort, UserCredentialsRe
         }
         User user = new User(UUID.randomUUID(), userToCreate.name(), userToCreate.email(),
             userToCreate.creationDateTime(),
+            userToCreate.employmentDate(),
             userToCreate.role());
         userTable.put(user.email(), new UserWithPassword(user, userToCreate.encodedPassword()));
         return user;
@@ -37,6 +38,13 @@ public class FakeUserRepository implements UserRepositoryPort, UserCredentialsRe
     @Override
     public ImmutableList<User> findAll() {
         return userTable.collect(UserWithPassword::user).toImmutableList();
+    }
+
+    @Override
+    public Optional<User> findByEmail(Email email) {
+        return Optional
+                .ofNullable(userTable.get(email))
+                .map(UserWithPassword::user);
     }
 
     @Override

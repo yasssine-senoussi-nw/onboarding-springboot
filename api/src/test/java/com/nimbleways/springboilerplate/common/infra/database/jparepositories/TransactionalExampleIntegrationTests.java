@@ -36,7 +36,7 @@ class TransactionalExampleIntegrationTests {
     @Order(1)
     @Transactional(propagation = Propagation.NEVER)
     void add_user_without_transaction() {
-        userRepository.save(createUser("user1", "pwd1"));
+        userRepository.save(createUser("user1", "pwd1", Instant.now()));
         // THEN
         assertThat(userRepository.findAll()).hasSize(1);
     }
@@ -48,7 +48,7 @@ class TransactionalExampleIntegrationTests {
     @Order(2)
     void add_a_second_user_with_transaction() {
         // WHEN
-        userRepository.save(createUser("user2", "pwd2"));
+        userRepository.save(createUser("user2", "pwd2", Instant.now()));
         // THEN
         assertThat(userRepository.findAll()).hasSize(2);
     }
@@ -57,7 +57,7 @@ class TransactionalExampleIntegrationTests {
     @Order(3)
     void add_another_second_user_with_transaction() {
         // WHEN
-        userRepository.save(createUser("user3", "pwd3"));
+        userRepository.save(createUser("user3", "pwd3", Instant.now()));
         // THEN
         assertThat(userRepository.findAll()).hasSize(2);
     }
@@ -80,12 +80,13 @@ class TransactionalExampleIntegrationTests {
     }
 
     @NotNull
-    private UserDbEntity createUser(String email, String password) {
+    private UserDbEntity createUser(String email, String password, Instant employmentDate) {
         UserDbEntity user = new UserDbEntity();
         user.email(email);
         user.password(password);
         user.name(email);
         user.createdAt(Instant.now());
+        user.employmentDate(employmentDate);
         user.role(RoleDbEntity.newFromRole(Role.USER));
         return user;
     }

@@ -11,6 +11,7 @@ public record NewUser(
         Email email,
         EncodedPassword encodedPassword,
         Instant creationDateTime,
+        Instant employmentDate,
         Role role
 ){
 }

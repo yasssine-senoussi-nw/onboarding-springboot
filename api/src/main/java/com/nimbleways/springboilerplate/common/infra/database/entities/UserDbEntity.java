@@ -53,6 +53,10 @@ public class UserDbEntity {
     @NotNull
     private Instant createdAt;
 
+    @Column(name = "employment_date")
+    @NotNull
+    private Instant employmentDate;
+
     @ManyToOne(cascade={CascadeType.ALL})
     @NotNull
     private RoleDbEntity role;
@@ -64,6 +68,7 @@ public class UserDbEntity {
         userDbEntity.email(newUser.email().value());
         userDbEntity.password(newUser.encodedPassword().value());
         userDbEntity.createdAt(newUser.creationDateTime());
+        userDbEntity.employmentDate(newUser.employmentDate());
         userDbEntity.role(role);
         return userDbEntity;
     }
@@ -74,6 +79,7 @@ public class UserDbEntity {
                 name,
                 new Email(email),
                 createdAt,
+                employmentDate,
                 getRole()
         );
     }

@@ -1,0 +1,14 @@
+databaseChangeLog:
+- changeSet:
+    id: 1740995065237-1
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: employment_date
+            type: TIMESTAMP(6) WITH TIME ZONE
+        tableName: users
+
