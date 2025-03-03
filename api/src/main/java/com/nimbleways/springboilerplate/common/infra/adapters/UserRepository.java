@@ -41,6 +41,13 @@ public class UserRepository implements UserRepositoryPort, UserCredentialsReposi
     }
 
     @Override
+    public Optional<User> findByEmail(Email email) {
+        return jpaUserRepository
+                .findByEmail(email.value())
+                .map(UserDbEntity::toUser);
+    }
+
+    @Override
     // TODO: Retrieve from the database only the fields needed for UserCredential
     public Optional<UserCredential> findUserCredentialByEmail(Email email) {
         return jpaUserRepository

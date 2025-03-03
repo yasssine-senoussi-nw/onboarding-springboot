@@ -1,11 +1,13 @@
 package com.nimbleways.springboilerplate.features.users.domain.usecases.suts;
 
+import com.nimbleways.springboilerplate.common.domain.ports.EmploymentDatePort;
 import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.infra.adapters.fakes.FakePasswordEncoder;
 import com.nimbleways.springboilerplate.common.infra.adapters.fakes.FakeUserRepository;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
 import com.nimbleways.springboilerplate.features.users.domain.usecases.signup.SignupCommand;
 import com.nimbleways.springboilerplate.features.users.domain.usecases.signup.SignupUseCase;
+import com.nimbleways.springboilerplate.testhelpers.configurations.EmploymentDateTestConfiguration;
 import com.nimbleways.springboilerplate.testhelpers.configurations.TimeTestConfiguration;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,6 +19,7 @@ import org.springframework.context.annotation.Import;
         SignupUseCase.class,
         FakeUserRepository.class,
         TimeTestConfiguration.class,
+        EmploymentDateTestConfiguration.class,
         FakePasswordEncoder.class
 })
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class SignupSut {
 
     private final FakeUserRepository userRepository;
     private final TimeProviderPort timeProvider;
+    private final EmploymentDatePort employmentDatePort;
     private final FakePasswordEncoder passwordEncoder;
 
     public User handle(final SignupCommand signupCommand) {

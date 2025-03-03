@@ -1,9 +1,11 @@
 package com.nimbleways.springboilerplate.testhelpers.fixtures;
 
+import com.nimbleways.springboilerplate.common.domain.ports.EmploymentDatePort;
 import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
+import com.nimbleways.springboilerplate.testhelpers.configurations.EmploymentDateTestConfiguration;
 import com.nimbleways.springboilerplate.testhelpers.configurations.TimeTestConfiguration;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -26,15 +28,18 @@ public class UserFixture {
         private String name = "name";
         private String email = "email@test.com";
         private TimeProviderPort timeProvider = TimeTestConfiguration.fixedTimeProvider();
+        private EmploymentDatePort employmentDateProvider = EmploymentDateTestConfiguration.fixedEmploymentDateProvider();
         private Role role = Role.USER;
 
         @NotNull
         public User build() {
+            Email userEmail = new Email(email);
             return new User(
                     id,
                     name,
-                    new Email(email),
+                    userEmail,
                     timeProvider.instant(),
+                    employmentDateProvider.getEmploymentDate(userEmail),
                     role);
         }
     }

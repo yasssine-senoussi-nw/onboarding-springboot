@@ -12,12 +12,13 @@ public record SignupCommand(
         String plainPassword,
         Role role
 ) {
-    public NewUser toNewUser(EncodedPassword encodedPassword, Instant creationDateTime) {
+    public NewUser toNewUser(EncodedPassword encodedPassword, Instant creationDateTime, Instant employmentDate) {
         return new NewUser(
                 name(),
                 email(),
                 encodedPassword,
                 creationDateTime,
+                employmentDate,
                 role()
         );
     }

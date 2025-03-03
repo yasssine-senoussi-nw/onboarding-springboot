@@ -1,11 +1,13 @@
 package com.nimbleways.springboilerplate.testhelpers.fixtures;
 
+import com.nimbleways.springboilerplate.common.domain.ports.EmploymentDatePort;
 import com.nimbleways.springboilerplate.common.domain.ports.PasswordEncoderPort;
 import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 import com.nimbleways.springboilerplate.common.infra.adapters.fakes.FakePasswordEncoder;
 import com.nimbleways.springboilerplate.features.users.domain.valueobjects.NewUser;
+import com.nimbleways.springboilerplate.testhelpers.configurations.EmploymentDateTestConfiguration;
 import com.nimbleways.springboilerplate.testhelpers.configurations.TimeTestConfiguration;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ public class NewUserFixture {
         private String plainPassword = "password-" + id;
         private Role role = Role.USER;
         private TimeProviderPort timeProvider = TimeTestConfiguration.fixedTimeProvider();
+        private EmploymentDatePort employmentDateProvider = EmploymentDateTestConfiguration.fixedEmploymentDateProvider();
         private PasswordEncoderPort passwordEncoder = FakePasswordEncoder.INSTANCE;
 
         @NotNull
@@ -39,6 +42,7 @@ public class NewUserFixture {
                     email,
                 passwordEncoder.encode(plainPassword),
                 timeProvider.instant(),
+                employmentDateProvider.getEmploymentDate(email),
                 role);
         }
     }

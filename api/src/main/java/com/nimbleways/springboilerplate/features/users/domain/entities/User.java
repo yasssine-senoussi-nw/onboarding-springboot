@@ -11,6 +11,7 @@ public record User(
         String name,
         Email email,
         Instant createdAt,
+        Instant employmentDate,
         Role role
 ){
 }
