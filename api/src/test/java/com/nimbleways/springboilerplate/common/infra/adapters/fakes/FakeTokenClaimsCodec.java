@@ -9,13 +9,17 @@ import com.fasterxml.jackson.databind.type.LogicalType;
 import com.fasterxml.jackson.datatype.eclipsecollections.EclipseCollectionsModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.infra.mappers.RoleMapper;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.TokenClaims;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AccessTokenDecodingException;
 import com.nimbleways.springboilerplate.features.authentication.domain.ports.TokenClaimsCodecPort;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.AccessToken;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import com.nimbleways.springboilerplate.features.users.domain.ports.SecurityContextPort;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.core.OAuth2Error;
@@ -24,7 +28,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtValidationException;
 
-public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
+public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, SecurityContextPort {
     private static final ObjectMapper objectMapper = createObjectMapper();
     private final TimeProviderPort timeProvider;
     private AccessToken lastCreatedToken;
@@ -89,18 +93,27 @@ public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
             throw new JwtValidationException("", List.of(new OAuth2Error("invalid_token")));
         }
 
+        String email = tokenClaims.userPrincipal().email().value();
         String role = RoleMapper.INSTANCE.fromValueObject(tokenClaims.userPrincipal().role());
         String subject = String.format("%s,%s",
             tokenClaims.userPrincipal().id(),
-            tokenClaims.userPrincipal().email().value()
+            email
         );
         return Jwt.withTokenValue(token)
             .header("alg", "none")
             .claim("scope", role)
+            .claim("email", email)
             .expiresAt(tokenClaims.expirationTime())
             .issuedAt(tokenClaims.creationTime())
             .subject(subject)
             .build();
+    }
+
+    @Override
+    public Optional<Email> getCurrentUserEmail() {
+        Jwt jwt = decode(lastCreatedToken().value());
+        Email email = new Email(jwt.getClaim("email"));
+        return Optional.of(email);
     }
 
     private record ClaimWrapper(UUID rand, TokenClaims tokenClaims) {}

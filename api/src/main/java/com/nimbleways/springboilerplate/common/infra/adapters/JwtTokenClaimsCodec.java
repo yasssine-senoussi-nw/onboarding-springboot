@@ -14,6 +14,7 @@ import com.nimbleways.springboilerplate.features.authentication.domain.entities.
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AccessTokenDecodingException;
 import com.nimbleways.springboilerplate.features.authentication.domain.ports.TokenClaimsCodecPort;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.AccessToken;
+import com.nimbleways.springboilerplate.features.users.domain.ports.SecurityContextPort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -21,12 +22,12 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+
+import java.util.*;
 import javax.crypto.SecretKey;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -35,7 +36,7 @@ import org.springframework.security.oauth2.jwt.JwtValidationException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
+public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, SecurityContextPort {
     private final JwtProperties jwtProperties;
     private final RandomGeneratorPort randomGenerator;
     private final TimeProviderPort timeProvider;
@@ -54,6 +55,11 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
 
     @Override
     public AccessToken encode(TokenClaims tokenClaims) {
+        Map<String, String> claims = Map.of(
+                "scope", RoleMapper.INSTANCE.fromValueObject(tokenClaims.userPrincipal().role()),
+                "email", tokenClaims.userPrincipal().email().value()
+        );
+
         return new AccessToken(
             Jwts.builder()
             .id(randomGenerator.uuid().toString().replace("-", ""))
@@ -62,7 +68,7 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
             .issuedAt(Date.from(tokenClaims.creationTime()))
             .expiration(Date.from(tokenClaims.expirationTime()))
             .signWith(jwtSigningKey)
-            .claims(Map.of("scope", RoleMapper.INSTANCE.fromValueObject(tokenClaims.userPrincipal().role())))
+            .claims(claims)
             .compact());
     }
 
@@ -160,5 +166,19 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder {
             .notBefore(payload.getIssuedAt().toInstant())
             .expiresAt(payload.getExpiration().toInstant())
             .build();
+    }
+
+    @Override
+    public Optional<Email> getCurrentUserEmail() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            return Optional.empty();
+        }
+
+        if (!(auth.getPrincipal() instanceof Jwt jwt)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(new Email(jwt.getClaim("email")));
     }
 }
