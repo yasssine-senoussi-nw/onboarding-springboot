@@ -1,0 +1,11 @@
+databaseChangeLog:
+- changeSet:
+    id: 1741103971791-1
+    author: Yassine (generated)
+    changes:
+    - addNotNullConstraint:
+        columnDataType: uuid
+        columnName: user_id
+        tableName: purchases
+        validate: true
+

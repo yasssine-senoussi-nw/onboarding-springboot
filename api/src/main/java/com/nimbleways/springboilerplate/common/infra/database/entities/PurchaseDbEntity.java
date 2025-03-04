@@ -1,6 +1,7 @@
 package com.nimbleways.springboilerplate.common.infra.database.entities;
 
 import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purchase;
+import com.nimbleways.springboilerplate.features.purchases.domain.valueobjects.NewPurchase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,19 @@ public class PurchaseDbEntity {
     private UUID id;
 
     @ManyToOne
+    @NotNull
     private UserDbEntity user;
 
     @Column(name = "purchase_date")
     @NotNull
     private Instant purchaseDate;
+
+    public static PurchaseDbEntity from(NewPurchase purchase, UserDbEntity user) {
+        PurchaseDbEntity entity = new PurchaseDbEntity();
+        entity.user(user);
+        entity.purchaseDate(purchase.purchaseDate());
+        return entity;
+    }
 
     public Purchase toPurchase() {
         return new Purchase(

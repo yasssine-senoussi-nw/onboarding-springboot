@@ -1,11 +1,11 @@
 package com.nimbleways.springboilerplate.common.domain.ports;
 
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.UserId;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface SecurityContextPort {
-    Optional<UserId> getCurrentUserId();
+    Optional<UUID> getCurrentUserId();
     Optional<Email> getCurrentUserEmail();
 }

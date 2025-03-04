@@ -2,21 +2,19 @@ package com.nimbleways.springboilerplate.features.purchases.api.endpoints.getpur
 
 import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purchase;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class GetPurchasesResponse extends ArrayList<GetPurchasesResponse.Item> {
     public record Item(
-            UUID id,
-            Instant purchaseDate
+            String id,
+            String purchaseDate
     ) {
-        public static Item from(Purchase user) {
+        public static Item from(Purchase purchase) {
             return new Item(
-                    user.id(),
-                    user.purchaseDate()
+                    purchase.id().toString(),
+                    purchase.purchaseDate().toString()
             );
         }
     }

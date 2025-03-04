@@ -1,10 +1,10 @@
 package com.nimbleways.springboilerplate.features.purchases.domain.usecases.getpurchases;
 
 import com.nimbleways.springboilerplate.common.domain.ports.SecurityContextPort;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.UserId;
 import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purchase;
 import com.nimbleways.springboilerplate.features.purchases.domain.ports.PurchaseRepositoryPort;
 
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public class GetPurchasesUseCase {
@@ -17,7 +17,7 @@ public class GetPurchasesUseCase {
     }
 
     public Stream<Purchase> handle() {
-        final UserId userId = securityContextPort.getCurrentUserId().orElseThrow();
+        final UUID userId = securityContextPort.getCurrentUserId().orElseThrow();
         return purchaseRepository.findByUserId(userId);
     }
 }

@@ -7,7 +7,6 @@ import com.nimbleways.springboilerplate.common.domain.ports.RandomGeneratorPort;
 import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.UserId;
 import com.nimbleways.springboilerplate.common.infra.mappers.RoleMapper;
 import com.nimbleways.springboilerplate.common.infra.properties.JwtProperties;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.TokenClaims;
@@ -67,7 +66,7 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, Se
         return new AccessToken(
             Jwts.builder()
             .id(randomGenerator.uuid().toString().replace("-", ""))
-            .subject(getSubject(tokenClaims.userPrincipal()))
+            .subject(getSubject(userPrincipal))
             .issuer(jwtProperties.issuer())
             .issuedAt(Date.from(tokenClaims.creationTime()))
             .expiration(Date.from(tokenClaims.expirationTime()))
@@ -173,11 +172,10 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, Se
     }
 
     @Override
-    public Optional<UserId> getCurrentUserId() {
+    public Optional<UUID> getCurrentUserId() {
         return getCurrentClaim()
                 .map(jwt -> (String) jwt.getClaim("userId"))
-                .map(UUID::fromString)
-                .map(UserId::new);
+                .map(UUID::fromString);
     }
 
     @Override
