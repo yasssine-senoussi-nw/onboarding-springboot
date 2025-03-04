@@ -10,7 +10,6 @@ import com.fasterxml.jackson.datatype.eclipsecollections.EclipseCollectionsModul
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
-import com.nimbleways.springboilerplate.common.domain.valueobjects.UserId;
 import com.nimbleways.springboilerplate.common.infra.mappers.RoleMapper;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.TokenClaims;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserPrincipal;
@@ -24,8 +23,6 @@ import java.util.UUID;
 import com.nimbleways.springboilerplate.common.domain.ports.SecurityContextPort;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -116,9 +113,9 @@ public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, S
     }
 
     @Override
-    public Optional<UserId> getCurrentUserId() {
+    public Optional<UUID> getCurrentUserId() {
         Jwt jwt = getCurrentClaim();
-        UserId user = new UserId(UUID.fromString(jwt.getClaim("user")));
+        UUID user = UUID.fromString(jwt.getClaim("user"));
         return Optional.of(user);
     }
 
