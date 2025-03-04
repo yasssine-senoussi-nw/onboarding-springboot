@@ -1,0 +1,37 @@
+databaseChangeLog:
+- changeSet:
+    id: 1741096220524-1
+    author: Yassine (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: purchasesPK
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: purchase_date
+            type: TIMESTAMP(6) WITH TIME ZONE
+        - column:
+            name: user_id
+            type: UUID
+        tableName: purchases
+- changeSet:
+    id: 1741096220524-2
+    author: Yassine (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: purchases
+        constraintName: FKm0ndjymn9p747pfp4515pio8i
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+
