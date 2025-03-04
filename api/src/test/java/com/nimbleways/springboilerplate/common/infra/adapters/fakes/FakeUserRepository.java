@@ -4,6 +4,7 @@ import static com.nimbleways.springboilerplate.testhelpers.helpers.Mapper.toUser
 
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.EncodedPassword;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Money;
 import com.nimbleways.springboilerplate.common.utils.collections.Mutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserCredential;
 import com.nimbleways.springboilerplate.features.authentication.domain.ports.UserCredentialsRepositoryPort;
@@ -30,7 +31,7 @@ public class FakeUserRepository implements UserRepositoryPort, UserCredentialsRe
         User user = new User(UUID.randomUUID(), userToCreate.name(), userToCreate.email(),
             userToCreate.creationDateTime(),
             userToCreate.employmentDate(),
-            userToCreate.role());
+            userToCreate.role(), new Money(0));
         userTable.put(user.email(), new UserWithPassword(user, userToCreate.encodedPassword()));
         return user;
     }

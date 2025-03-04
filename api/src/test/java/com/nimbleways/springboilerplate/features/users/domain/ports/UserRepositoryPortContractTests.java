@@ -48,7 +48,16 @@ public abstract class UserRepositoryPortContractTests {
         User user = userRepository.create(newUser);
 
         assertEquals(List.of(user), userRepository.findAll());
-        assertEquals(Optional.of(user), userRepository.findByEmail(user.email()));
+    }
+
+    @Test
+    void finding_the_newly_created_user_after_creating_one() {
+        NewUser newUser = aNewUser().build();
+
+        User user = userRepository.create(newUser);
+        Optional<User> result = userRepository.findByEmail(user.email());
+
+        assertEquals(Optional.of(user), result);
     }
 
     @Test

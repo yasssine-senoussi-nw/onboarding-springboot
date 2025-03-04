@@ -39,7 +39,7 @@ public class NewUserFixture {
         public NewUser build() {
             return new NewUser(
                 name,
-                    email,
+                email,
                 passwordEncoder.encode(plainPassword),
                 timeProvider.instant(),
                 employmentDateProvider.getEmploymentDate(email),

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.nimbleways.springboilerplate.common.domain.valueobjects.EncodedPassword;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Money;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Role;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
@@ -85,7 +86,8 @@ class SignupUseCaseUnitTests {
             signupCommand.email(),
             sut.timeProvider().instant(),
             sut.employmentDatePort().getEmploymentDate(signupCommand.email()),
-            signupCommand.role()
+            signupCommand.role(),
+            new Money(0)
         );
     }
 

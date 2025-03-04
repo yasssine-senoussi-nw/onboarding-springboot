@@ -28,3 +28,6 @@ databaseChangeLog:
   - include:
       file: changelog/20250303-094402-add-employment-date-to-user.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changelog/20250303-153105-add-balance-to-user.yaml
+      relativeToChangelogFile: true
