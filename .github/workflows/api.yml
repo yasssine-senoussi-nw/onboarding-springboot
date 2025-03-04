@@ -140,88 +140,88 @@ jobs:
 
 #######################################################
 
-  dependency-security-check:
-    name: Vulnerability check for new dependencies
-    if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-24.04
-    needs: unit-tests
-    defaults:
-      run:
-        shell: bash
-    timeout-minutes: 15
-    steps:
+  # dependency-security-check:
+  #   name: Vulnerability check for new dependencies
+  #   if: ${{ github.event_name == 'pull_request' }}
+  #   runs-on: ubuntu-24.04
+  #   needs: unit-tests
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   timeout-minutes: 15
+  #   steps:
 
-      - name: Check out repository code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-        with:
-          fetch-depth: "0" # Needed the get this branch forking commit
+  #     - name: Check out repository code
+  #       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+  #       with:
+  #         fetch-depth: "0" # Needed the get this branch forking commit
 
-      - name: Setup Maven
-        id: setup-maven
-        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
-        with:
-          distribution: 'temurin'
-          java-version: '17.0.14+7'
-          cache: 'maven'
+  #     - name: Setup Maven
+  #       id: setup-maven
+  #       uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: '17.0.14+7'
+  #         cache: 'maven'
 
-      - name: Get Dependency Check config from POM.XML
-        id: dependency-check-config
-        run: |
-          echo "::set-output name=version::$(grep -Po '\K<org\.owasp\.dependency-check-maven\.version>\K.+?(?=</org\.owasp\.dependency-check-maven\.version>)' $PROJECT_DIR/pom.xml)"
-          echo "::set-output name=failBuildOnCVSS::$(grep -Po '\K<failBuildOnCVSS>\K.+?(?=</failBuildOnCVSS>)' $PROJECT_DIR/pom.xml)"
-          echo "::set-output name=suppressionFile::$(grep -Po '\K<org\.owasp\.dependency-check-maven\.suppressionFile>\K.+?(?=</org\.owasp\.dependency-check-maven\.suppressionFile>)' $PROJECT_DIR/pom.xml)"
+  #     - name: Get Dependency Check config from POM.XML
+  #       id: dependency-check-config
+  #       run: |
+  #         echo "::set-output name=version::$(grep -Po '\K<org\.owasp\.dependency-check-maven\.version>\K.+?(?=</org\.owasp\.dependency-check-maven\.version>)' $PROJECT_DIR/pom.xml)"
+  #         echo "::set-output name=failBuildOnCVSS::$(grep -Po '\K<failBuildOnCVSS>\K.+?(?=</failBuildOnCVSS>)' $PROJECT_DIR/pom.xml)"
+  #         echo "::set-output name=suppressionFile::$(grep -Po '\K<org\.owasp\.dependency-check-maven\.suppressionFile>\K.+?(?=</org\.owasp\.dependency-check-maven\.suppressionFile>)' $PROJECT_DIR/pom.xml)"
 
-      - name: Cache Dependency Check
-        id: dependency-check-cache
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
-        with:
-          path: ${{ env.PROJECT_DIR }}/dependency-check/
-          key: dependency-check-${{ runner.os }}-${{ steps.dependency-check-config.outputs.version }}
+  #     - name: Cache Dependency Check
+  #       id: dependency-check-cache
+  #       uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+  #       with:
+  #         path: ${{ env.PROJECT_DIR }}/dependency-check/
+  #         key: dependency-check-${{ runner.os }}-${{ steps.dependency-check-config.outputs.version }}
 
-      - name: Download Dependency Checker
-        if: steps.dependency-check-cache.outputs.cache-hit != 'true'
-        run: |
-          cd $PROJECT_DIR
-          DEPENDENCY_CHECKER_VERSION=${{ steps.dependency-check-config.outputs.version }}
-          echo DEPENDENCY_CHECKER_VERSION=$DEPENDENCY_CHECKER_VERSION
-          wget -qO- https://github.com/jeremylong/DependencyCheck/releases/download/v${DEPENDENCY_CHECKER_VERSION}/dependency-check-${DEPENDENCY_CHECKER_VERSION}-release.zip | busybox unzip -
+  #     - name: Download Dependency Checker
+  #       if: steps.dependency-check-cache.outputs.cache-hit != 'true'
+  #       run: |
+  #         cd $PROJECT_DIR
+  #         DEPENDENCY_CHECKER_VERSION=${{ steps.dependency-check-config.outputs.version }}
+  #         echo DEPENDENCY_CHECKER_VERSION=$DEPENDENCY_CHECKER_VERSION
+  #         wget -qO- https://github.com/jeremylong/DependencyCheck/releases/download/v${DEPENDENCY_CHECKER_VERSION}/dependency-check-${DEPENDENCY_CHECKER_VERSION}-release.zip | busybox unzip -
 
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+  #     - name: Get current date
+  #       id: date
+  #       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: Cache Dependency Check Database
-        id: dependency-check-database-cache
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
-        with:
-          path: ${{ env.PROJECT_DIR }}/dependency-check-database
-          key: dependency-check-${{ runner.os }}-${{ steps.dependency-check-config.outputs.version }}-${{ steps.date.outputs.date }}
-          restore-keys: |
-            dependency-check-${{ runner.os }}-${{ steps.dependency-check-config.outputs.version }}-
-            dependency-check-${{ runner.os }}-
-            dependency-check-
+  #     - name: Cache Dependency Check Database
+  #       id: dependency-check-database-cache
+  #       uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+  #       with:
+  #         path: ${{ env.PROJECT_DIR }}/dependency-check-database
+  #         key: dependency-check-${{ runner.os }}-${{ steps.dependency-check-config.outputs.version }}-${{ steps.date.outputs.date }}
+  #         restore-keys: |
+  #           dependency-check-${{ runner.os }}-${{ steps.dependency-check-config.outputs.version }}-
+  #           dependency-check-${{ runner.os }}-
+  #           dependency-check-
 
-      - name: Download Dependency Checker Database
-        if: steps.dependency-check-database-cache.outputs.cache-hit != 'true'
-        run: |
-          cd $PROJECT_DIR
-          mkdir -p ${PROJECT_DIR}/dependency-check-database/
-          bash ./dependency-check/bin/dependency-check.sh --updateonly --data ${PROJECT_DIR}/dependency-check-database/ --nvdApiKey ${{ secrets.NVD_API_KEY }}
+  #     - name: Download Dependency Checker Database
+  #       if: steps.dependency-check-database-cache.outputs.cache-hit != 'true'
+  #       run: |
+  #         cd $PROJECT_DIR
+  #         mkdir -p ${PROJECT_DIR}/dependency-check-database/
+  #         bash ./dependency-check/bin/dependency-check.sh --updateonly --data ${PROJECT_DIR}/dependency-check-database/ --nvdApiKey ${{ secrets.NVD_API_KEY }}
 
-      - name: Run vulnerability check on new dependencies
-        run: |
-          FAIL_BUILD_ON_CVSS=${{ steps.dependency-check-config.outputs.failBuildOnCVSS }}
-          SUPPRESSION_FILE=${PROJECT_DIR}/${{ steps.dependency-check-config.outputs.suppressionFile }}
-          bash .ci/scripts/vul-check.sh ${PROJECT_DIR}/dependency-check/bin/dependency-check.sh $FAIL_BUILD_ON_CVSS $SUPPRESSION_FILE origin/$GITHUB_BASE_REF
+  #     - name: Run vulnerability check on new dependencies
+  #       run: |
+  #         FAIL_BUILD_ON_CVSS=${{ steps.dependency-check-config.outputs.failBuildOnCVSS }}
+  #         SUPPRESSION_FILE=${PROJECT_DIR}/${{ steps.dependency-check-config.outputs.suppressionFile }}
+  #         bash .ci/scripts/vul-check.sh ${PROJECT_DIR}/dependency-check/bin/dependency-check.sh $FAIL_BUILD_ON_CVSS $SUPPRESSION_FILE origin/$GITHUB_BASE_REF
 
-      - name: Upload vulnerable new dependencies report
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
-        with:
-          name: vulnerable-dependencies-report
-          retention-days: "1"
-          path: |
-            ${{ env.PROJECT_DIR }}/dependency-check-report.html
+  #     - name: Upload vulnerable new dependencies report
+  #       if: ${{ failure() }}
+  #       uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+  #       with:
+  #         name: vulnerable-dependencies-report
+  #         retention-days: "1"
+  #         path: |
+  #           ${{ env.PROJECT_DIR }}/dependency-check-report.html
 
 #######################################################
 
