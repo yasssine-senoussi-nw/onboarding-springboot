@@ -1,5 +1,6 @@
 package com.nimbleways.springboilerplate.common.api.exceptionhandling;
 
+import com.nimbleways.springboilerplate.common.domain.exceptions.AbstractItemNotFoundException;
 import com.nimbleways.springboilerplate.common.domain.ports.EventPublisherPort;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AbstractAuthenticationDomainException;
 import com.nimbleways.springboilerplate.features.users.domain.exceptions.EmailAlreadyExistsInRepositoryException;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
     @Nullable
     public final ResponseEntity<Object> handleException(EmailAlreadyExistsInRepositoryException ex, WebRequest request) {
         return getDefaultResponseEntity(ex, request, HttpStatus.BAD_REQUEST, ApiErrorCodes.EMAIL_ALREADY_EXISTS_ERROR);
+    }
+
+    @ExceptionHandler({AbstractItemNotFoundException.class})
+    @Nullable
+    public final ResponseEntity<Object> handleException(AbstractItemNotFoundException ex, WebRequest request) {
+        return getDefaultResponseEntity(ex, request, HttpStatus.NOT_FOUND, ApiErrorCodes.ITEM_NOT_FOUND_ERROR);
     }
 
     @ExceptionHandler({Exception.class})
