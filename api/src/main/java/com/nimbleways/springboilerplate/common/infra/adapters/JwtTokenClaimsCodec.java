@@ -173,18 +173,18 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, Se
 
     @Override
     public Optional<UUID> getCurrentUserId() {
-        return getCurrentClaim()
+        return getJwt()
                 .map(jwt -> (String) jwt.getClaim("userId"))
                 .map(UUID::fromString);
     }
 
     @Override
     public Optional<Email> getCurrentUserEmail() {
-        return getCurrentClaim()
+        return getJwt()
                 .map(jwt -> new Email(jwt.getClaim("email")));
     }
 
-    private Optional<Jwt> getCurrentClaim() {
+    private Optional<Jwt> getJwt() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
             return Optional.empty();

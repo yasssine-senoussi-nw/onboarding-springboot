@@ -115,7 +115,7 @@ public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, S
     @Override
     public Optional<UUID> getCurrentUserId() {
         Jwt jwt = getCurrentClaim();
-        UUID user = UUID.fromString(jwt.getClaim("user"));
+        UUID user = UUID.fromString(jwt.getClaim("userId"));
         return Optional.of(user);
     }
 
