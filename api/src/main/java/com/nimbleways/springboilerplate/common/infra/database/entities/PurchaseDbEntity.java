@@ -1,5 +1,6 @@
 package com.nimbleways.springboilerplate.common.infra.database.entities;
 
+import com.nimbleways.springboilerplate.common.domain.valueobjects.Money;
 import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purchase;
 import com.nimbleways.springboilerplate.features.purchases.domain.valueobjects.NewPurchase;
 import jakarta.persistence.*;
@@ -34,10 +35,17 @@ public class PurchaseDbEntity {
     @NotNull
     private Instant purchaseDate;
 
+    @NotNull
+    private String brand;
+
+    private double price;
+
     public static PurchaseDbEntity from(NewPurchase purchase, UserDbEntity user) {
         PurchaseDbEntity entity = new PurchaseDbEntity();
         entity.user(user);
         entity.purchaseDate(purchase.purchaseDate());
+        entity.brand(purchase.brand());
+        entity.price(purchase.price().value());
         return entity;
     }
 
@@ -45,7 +53,9 @@ public class PurchaseDbEntity {
         return new Purchase(
                 id,
                 user.id(),
-                purchaseDate
+                purchaseDate,
+                brand,
+                new Money(price)
         );
     }
 }
