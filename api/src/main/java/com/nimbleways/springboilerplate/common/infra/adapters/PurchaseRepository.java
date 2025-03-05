@@ -10,6 +10,7 @@ import com.nimbleways.springboilerplate.features.purchases.domain.valueobjects.N
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -31,6 +32,13 @@ public class PurchaseRepository implements PurchaseRepositoryPort {
 
         entity = purchaseRepository.saveAndFlush(entity);
         return entity.toPurchase();
+    }
+
+    @Override
+    public Optional<Purchase> findById(UUID purchaseId) {
+        return purchaseRepository
+                .findById(purchaseId)
+                .map(PurchaseDbEntity::toPurchase);
     }
 
     @Override
