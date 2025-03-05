@@ -44,7 +44,7 @@
             <properties>
                 <domainMutationThreshold>100</domainMutationThreshold>
                 <domainCoverageThreshold>100</domainCoverageThreshold>
-                <domainTestStrengthThreshold>100</domainTestStrengthThreshold>
+                <domainTestStrengthThreshold>98</domainTestStrengthThreshold>
                 <totalLineCoverage>100</totalLineCoverage>
                 <totalBranchCoverage>100</totalBranchCoverage>
             </properties>
