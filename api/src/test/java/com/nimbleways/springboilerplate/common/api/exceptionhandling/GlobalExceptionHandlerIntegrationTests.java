@@ -3,6 +3,7 @@ package com.nimbleways.springboilerplate.common.api.exceptionhandling;
 import com.nimbleways.springboilerplate.common.api.exceptionhandling.GlobalExceptionHandlerIntegrationTests.InMemoryEventListener;
 import com.nimbleways.springboilerplate.common.api.events.UnhandledExceptionEvent;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
+import com.nimbleways.springboilerplate.common.utils.UUIDHelpers;
 import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AccessTokenDecodingException;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.BadUserCredentialException;
@@ -11,6 +12,7 @@ import com.nimbleways.springboilerplate.features.authentication.domain.exception
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.RefreshTokenExpiredOrNotFoundException;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.UnknownEmailException;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.AccessToken;
+import com.nimbleways.springboilerplate.features.purchases.domain.exceptions.PurchaseNotFoundException;
 import com.nimbleways.springboilerplate.features.users.domain.exceptions.EmailAlreadyExistsInRepositoryException;
 import com.nimbleways.springboilerplate.testhelpers.BaseWebMvcIntegrationTests;
 import com.nimbleways.springboilerplate.testhelpers.utils.ClassFinder;
@@ -201,6 +203,11 @@ class GlobalExceptionHandlerIntegrationTests extends BaseWebMvcIntegrationTests 
             {"type":"about:blank","title":"errors.internal_server_error","status":500,
             "detail":"errors.internal_server_error","instance":"/exception-handling/throw"}""";
 
+        // In the method `provideExceptions()` and the expected JsonResponse for the not found exception, and add Arguments of `PurchaseNotFoundException`
+        final String notFoundJsonResponse = """
+            {"type":"about:blank","title":"errors.item_not_found","status":404,
+            "detail":"errors.item_not_found","instance":"/exception-handling/throw"}""";
+
         return Stream.of(
             Arguments.of(
                 new AccessDeniedException(""),
@@ -238,6 +245,10 @@ class GlobalExceptionHandlerIntegrationTests extends BaseWebMvcIntegrationTests 
             Arguments.of(
                 new UnknownEmailException(new Email("")),
                 HttpStatus.UNAUTHORIZED, unauthorizedJsonResponse),
+
+            Arguments.of(
+                new PurchaseNotFoundException(UUIDHelpers.nullUUID()),
+                HttpStatus.NOT_FOUND, notFoundJsonResponse),
 
             Arguments.of(
                 new CannotCreateUserSessionInRepositoryException(

@@ -7,6 +7,7 @@ import com.nimbleways.springboilerplate.features.users.domain.ports.UserReposito
 
 import static com.nimbleways.springboilerplate.testhelpers.fixtures.NewUserFixture.aNewUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class PurchaseRepositoryPortContractTests {
@@ -66,6 +68,34 @@ public abstract class PurchaseRepositoryPortContractTests {
 
         // THEN
         assertEquals(List.of(entity), purchases);
+    }
+
+    @Test
+    @Transactional
+    void find_by_invalid_id_yields_empty() {
+        // GIVEN
+        UUID purchaseId = UUID.randomUUID();
+
+        // WHEN
+        Optional<Purchase> purchase = purchaseRepositoryPort.findById(purchaseId);
+
+        // THEN
+        assertTrue(purchase.isEmpty());
+    }
+
+    @Test
+    @Transactional
+    void find_by_valid_id_yields_correct_result() {
+        // GIVEN
+        User user = userRepositoryPort.create(aNewUser().build());
+        NewPurchase newPurchase = new NewPurchase(user.id(), Instant.now());
+        Purchase entity = purchaseRepositoryPort.create(newPurchase);
+
+        // WHEN
+        Optional<Purchase> purchase = purchaseRepositoryPort.findById(entity.id());
+
+        // THEN
+        assertEquals(Optional.of(entity), purchase);
     }
 
     protected abstract PurchaseRepositoryPort getPurchaseRepository();
