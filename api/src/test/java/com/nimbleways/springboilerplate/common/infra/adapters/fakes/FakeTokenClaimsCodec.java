@@ -12,6 +12,7 @@ import com.nimbleways.springboilerplate.common.domain.ports.TimeProviderPort;
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.common.infra.mappers.RoleMapper;
 import com.nimbleways.springboilerplate.features.authentication.domain.entities.TokenClaims;
+import com.nimbleways.springboilerplate.features.authentication.domain.entities.UserPrincipal;
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AccessTokenDecodingException;
 import com.nimbleways.springboilerplate.features.authentication.domain.ports.TokenClaimsCodecPort;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.AccessToken;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.nimbleways.springboilerplate.features.users.domain.ports.SecurityContextPort;
+import com.nimbleways.springboilerplate.common.domain.ports.SecurityContextPort;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.core.OAuth2Error;
@@ -93,16 +94,18 @@ public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, S
             throw new JwtValidationException("", List.of(new OAuth2Error("invalid_token")));
         }
 
-        String email = tokenClaims.userPrincipal().email().value();
-        String role = RoleMapper.INSTANCE.fromValueObject(tokenClaims.userPrincipal().role());
+        UserPrincipal userPrincipal = tokenClaims.userPrincipal();
+        String email = userPrincipal.email().value();
+        String role = RoleMapper.INSTANCE.fromValueObject(userPrincipal.role());
         String subject = String.format("%s,%s",
-            tokenClaims.userPrincipal().id(),
+                userPrincipal.id(),
             email
         );
         return Jwt.withTokenValue(token)
             .header("alg", "none")
             .claim("scope", role)
             .claim("email", email)
+            .claim("userId", userPrincipal.id().toString())
             .expiresAt(tokenClaims.expirationTime())
             .issuedAt(tokenClaims.creationTime())
             .subject(subject)
@@ -110,10 +113,21 @@ public class FakeTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, S
     }
 
     @Override
+    public Optional<UUID> getCurrentUserId() {
+        Jwt jwt = getCurrentClaim();
+        UUID user = UUID.fromString(jwt.getClaim("userId"));
+        return Optional.of(user);
+    }
+
+    @Override
     public Optional<Email> getCurrentUserEmail() {
-        Jwt jwt = decode(lastCreatedToken().value());
+        Jwt jwt = getCurrentClaim();
         Email email = new Email(jwt.getClaim("email"));
         return Optional.of(email);
+    }
+
+    private Jwt getCurrentClaim() {
+       return decode(lastCreatedToken().value());
     }
 
     private record ClaimWrapper(UUID rand, TokenClaims tokenClaims) {}

@@ -73,7 +73,7 @@ public class UserDbEntity {
         userDbEntity.createdAt(newUser.creationDateTime());
         userDbEntity.employmentDate(newUser.employmentDate());
         userDbEntity.role(role);
-        userDbEntity.balance(0.);
+        userDbEntity.balance(0);
         return userDbEntity;
     }
 

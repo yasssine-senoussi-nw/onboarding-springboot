@@ -2,7 +2,7 @@ package com.nimbleways.springboilerplate.features.users.domain.usecases.getauthe
 
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Email;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
-import com.nimbleways.springboilerplate.features.users.domain.ports.SecurityContextPort;
+import com.nimbleways.springboilerplate.common.domain.ports.SecurityContextPort;
 import com.nimbleways.springboilerplate.features.users.domain.ports.UserRepositoryPort;
 
 public class GetAuthenticatedUserUseCase {

@@ -14,7 +14,7 @@ import com.nimbleways.springboilerplate.features.authentication.domain.entities.
 import com.nimbleways.springboilerplate.features.authentication.domain.exceptions.AccessTokenDecodingException;
 import com.nimbleways.springboilerplate.features.authentication.domain.ports.TokenClaimsCodecPort;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.AccessToken;
-import com.nimbleways.springboilerplate.features.users.domain.ports.SecurityContextPort;
+import com.nimbleways.springboilerplate.common.domain.ports.SecurityContextPort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -25,6 +25,7 @@ import io.jsonwebtoken.security.Keys;
 
 import java.util.*;
 import javax.crypto.SecretKey;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,15 +56,17 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, Se
 
     @Override
     public AccessToken encode(TokenClaims tokenClaims) {
+        UserPrincipal userPrincipal = tokenClaims.userPrincipal();
         Map<String, String> claims = Map.of(
-                "scope", RoleMapper.INSTANCE.fromValueObject(tokenClaims.userPrincipal().role()),
-                "email", tokenClaims.userPrincipal().email().value()
+                "scope", RoleMapper.INSTANCE.fromValueObject(userPrincipal.role()),
+                "userId", userPrincipal.id().toString(),
+                "email", userPrincipal.email().value()
         );
 
         return new AccessToken(
             Jwts.builder()
             .id(randomGenerator.uuid().toString().replace("-", ""))
-            .subject(getSubject(tokenClaims.userPrincipal()))
+            .subject(getSubject(userPrincipal))
             .issuer(jwtProperties.issuer())
             .issuedAt(Date.from(tokenClaims.creationTime()))
             .expiration(Date.from(tokenClaims.expirationTime()))
@@ -169,7 +172,19 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, Se
     }
 
     @Override
+    public Optional<UUID> getCurrentUserId() {
+        return getJwt()
+                .map(jwt -> (String) jwt.getClaim("userId"))
+                .map(UUID::fromString);
+    }
+
+    @Override
     public Optional<Email> getCurrentUserEmail() {
+        return getJwt()
+                .map(jwt -> new Email(jwt.getClaim("email")));
+    }
+
+    private Optional<Jwt> getJwt() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
             return Optional.empty();
@@ -179,6 +194,6 @@ public class JwtTokenClaimsCodec implements TokenClaimsCodecPort, JwtDecoder, Se
             return Optional.empty();
         }
 
-        return Optional.of(new Email(jwt.getClaim("email")));
+        return Optional.of(jwt);
     }
 }

@@ -39,7 +39,7 @@ class GetAuthenticatedUserEndpointIntegrationTests extends BaseWebMvcIntegration
 
                 // THEN
                 .andExpect(status().isOk())
-                .andExpect(content().string(exptectedJson));
+                .andExpect(content().json(exptectedJson));
     }
 
     private String expectedUserContent(User user) {

@@ -31,3 +31,9 @@ databaseChangeLog:
   - include:
       file: changelog/20250303-153105-add-balance-to-user.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changelog/20250304-134955-add-purchase-entity.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20250304-155859-make-user-not-null.yaml
+      relativeToChangelogFile: true

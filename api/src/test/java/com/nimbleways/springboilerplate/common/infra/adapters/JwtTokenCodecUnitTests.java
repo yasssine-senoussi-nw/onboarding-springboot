@@ -19,6 +19,7 @@ import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -60,37 +61,43 @@ class JwtTokenCodecUnitTests extends TokenClaimsCodecPortContractTests {
     }
 
     @Test
-    void getCurrentUserEmail_when_authentication_is_null_returns_empty() {
+    void getContext_when_authentication_is_null_returns_empty() {
         // GIVEN
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(null);
         SecurityContextHolder.setContext(context);
 
         // WHEN
-        Optional<Email> result = INSTANCE.getCurrentUserEmail();
+        Optional<Email> email = INSTANCE.getCurrentUserEmail();
+        Optional<UUID> userId = INSTANCE.getCurrentUserId();
 
         // THEN
-        assertTrue(result.isEmpty());
+        assertTrue(email.isEmpty());
+        assertTrue(userId.isEmpty());
     }
 
     @Test
-    void getCurrentUserEmail_when_principal_is_not_Jwt_returns_empty() {
+    void getContext_when_principal_is_not_Jwt_returns_empty() {
         // GIVEN
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(new FakeAuthentication(null));
         SecurityContextHolder.setContext(context);
 
         // WHEN
-        Optional<Email> result = INSTANCE.getCurrentUserEmail();
+        Optional<Email> email = INSTANCE.getCurrentUserEmail();
+        Optional<UUID> userId = INSTANCE.getCurrentUserId();
 
         // THEN
-        assertTrue(result.isEmpty());
+        assertTrue(email.isEmpty());
+        assertTrue(userId.isEmpty());
     }
 
     @Test
-    void getCurrentUserEmail_when_Jwt_has_email_returns_email() {
+    void getContext_when_Jwt_is_valid() {
         // GIVEN
-        ImmutableMap<String, Object> claims = ImmutableMap.of("email", "user@example.com");
+        ImmutableMap<String, Object> claims = ImmutableMap.of(
+                "email", "user@example.com",
+                "userId", UUID.randomUUID().toString());
         Jwt jwt = new FakeJwt(claims);
         Authentication auth = new FakeAuthentication(jwt);
 
@@ -99,10 +106,12 @@ class JwtTokenCodecUnitTests extends TokenClaimsCodecPortContractTests {
         SecurityContextHolder.setContext(context);
 
         // WHEN
-        Optional<Email> result = INSTANCE.getCurrentUserEmail();
+        Optional<Email> email = INSTANCE.getCurrentUserEmail();
+        Optional<UUID> userId = INSTANCE.getCurrentUserId();
 
         // THEN
-        assertTrue(result.isPresent());
-        assertEquals("user@example.com", result.get().value());
+        assertTrue(email.isPresent());
+        assertTrue(userId.isPresent());
+        assertEquals("user@example.com", email.get().value());
     }
 }
