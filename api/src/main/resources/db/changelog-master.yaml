@@ -37,3 +37,6 @@ databaseChangeLog:
   - include:
       file: changelog/20250304-155859-make-user-not-null.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changelog/20250305-115154-add-create-purchase-endpoint.yaml
+      relativeToChangelogFile: true

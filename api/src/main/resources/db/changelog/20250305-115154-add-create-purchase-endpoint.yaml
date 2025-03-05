@@ -1,0 +1,26 @@
+databaseChangeLog:
+- changeSet:
+    id: 1741175553197-1
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: brand
+            type: VARCHAR(255)
+        tableName: purchases
+- changeSet:
+    id: 1741175553197-2
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: price
+            type: FLOAT(53)
+        tableName: purchases
+
