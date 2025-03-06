@@ -1,6 +1,8 @@
 package com.nimbleways.springboilerplate.features.purchases.domain.usecases;
 
 import com.nimbleways.springboilerplate.common.domain.valueobjects.Money;
+import com.nimbleways.springboilerplate.common.domain.valueobjects.StarRating;
+import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purchase;
 import com.nimbleways.springboilerplate.features.purchases.domain.usecases.createpurchase.CreatePurchaseCommand;
 import com.nimbleways.springboilerplate.features.purchases.domain.usecases.suts.CreatePurchaseSut;
@@ -20,9 +22,14 @@ class CreatePurchaseUseCaseUnitTests {
         // GIVEN
         User user = sut.sessionHelper().addUserAndSessionToRepository().user();
         CreatePurchaseCommand command = new CreatePurchaseCommand(
-                user.id(),
-                "brand",
-                new Money(19)
+            user.id(),
+            "name",
+            "brand",
+            "model",
+            "store",
+            Immutable.list.of(""),
+            new Money(7.5),
+            new StarRating(3)
         );
 
         // WHEN
