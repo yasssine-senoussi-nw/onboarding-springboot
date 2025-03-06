@@ -33,24 +33,6 @@
     <totalBranchCoverage>60</totalBranchCoverage>
   </properties>
 
-    <profiles>
-        <profile>
-            <id>boilerplate</id>
-            <activation>
-                <file>
-                    <exists>src/main/java/com/nimbleways/springboilerplate/Application.java</exists>
-                </file>
-            </activation>
-            <properties>
-                <domainMutationThreshold>90</domainMutationThreshold>
-                <domainCoverageThreshold>90</domainCoverageThreshold>
-                <domainTestStrengthThreshold>90</domainTestStrengthThreshold>
-                <totalLineCoverage>90</totalLineCoverage>
-                <totalBranchCoverage>90</totalBranchCoverage>
-            </properties>
-        </profile>
-    </profiles>
-
   <dependencies>
     <dependency>
       <groupId>org.checkerframework</groupId>

@@ -1,7 +1,6 @@
 package com.nimbleways.springboilerplate.features.purchases.domain.ports;
 
 import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purchase;
-import com.nimbleways.springboilerplate.features.purchases.domain.valueobjects.NewPurchase;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
 import com.nimbleways.springboilerplate.features.users.domain.ports.UserRepositoryPort;
 
@@ -9,11 +8,11 @@ import static com.nimbleways.springboilerplate.testhelpers.fixtures.NewUserFixtu
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import static com.nimbleways.springboilerplate.testhelpers.fixtures.NewPurchaseFixture.aNewPurchase;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,9 +58,7 @@ public abstract class PurchaseRepositoryPortContractTests {
     void find_by_userid_with_purchases_yields_correct_result() {
         // GIVEN
         User user = userRepositoryPort.create(aNewUser().build());
-        NewPurchase purchase = new NewPurchase(user.id(), Instant.now());
-
-        Purchase entity = purchaseRepositoryPort.create(purchase);
+        Purchase entity = purchaseRepositoryPort.create(aNewPurchase().build(user.id()));
 
         // WHEN
         List<Purchase> purchases = purchaseRepositoryPort.findByUserId(user.id()).toList();

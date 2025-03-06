@@ -18,7 +18,13 @@ public class FakePurchaseRepository implements PurchaseRepositoryPort {
     public Purchase create(NewPurchase purchase) {
         UUID id = UUID.randomUUID();
 
-        Purchase entity = new Purchase(id, purchase.userId(), purchase.purchaseDate());
+        Purchase entity = new Purchase(
+                id,
+                purchase.userId(),
+                purchase.purchaseDate(),
+                purchase.brand(),
+                purchase.price()
+        );
         purchasesTable.put(id, entity);
 
         return entity;
