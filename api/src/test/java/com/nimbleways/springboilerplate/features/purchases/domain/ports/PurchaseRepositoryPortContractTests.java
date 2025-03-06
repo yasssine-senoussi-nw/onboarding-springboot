@@ -85,8 +85,7 @@ public abstract class PurchaseRepositoryPortContractTests {
     void find_by_valid_id_yields_correct_result() {
         // GIVEN
         User user = userRepositoryPort.create(aNewUser().build());
-        NewPurchase newPurchase = new NewPurchase(user.id(), Instant.now());
-        Purchase entity = purchaseRepositoryPort.create(newPurchase);
+        Purchase entity = purchaseRepositoryPort.create(aNewPurchase().build(user.id()));
 
         // WHEN
         Optional<Purchase> purchase = purchaseRepositoryPort.findById(entity.id());

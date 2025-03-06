@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.util.UUID;
 
+import static com.nimbleways.springboilerplate.testhelpers.fixtures.NewPurchaseFixture.aNewPurchase;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,7 +25,7 @@ class GetPurchaseUseCaseUnitTests {
     void returns_dummy_purchase() {
         // GIVEN
         User user = sut.sessionHelper().addUserAndSessionToRepository().user();
-        Purchase purchase = sut.purchaseRepository().create(new NewPurchase(user.id(), Instant.now()));
+        Purchase purchase = sut.purchaseRepository().create(aNewPurchase().build(user.id()));
         UUID purchaseId = purchase.id();
 
         // WHEN

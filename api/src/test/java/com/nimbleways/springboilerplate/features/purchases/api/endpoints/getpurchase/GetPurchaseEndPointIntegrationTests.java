@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import java.time.Instant;
 import java.util.UUID;
 
+import static com.nimbleways.springboilerplate.testhelpers.fixtures.NewPurchaseFixture.aNewPurchase;
 import static com.nimbleways.springboilerplate.testhelpers.helpers.TokenHelpers.urlEncodeAccessToken;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -33,7 +34,7 @@ class GetPurchaseEndPointIntegrationTests extends BaseWebMvcIntegrationTests {
         // GIVEN
         UserSessionHelperSut.TestData testData = getPurchasesSut.sessionHelper().addUserAndSessionToRepository();
         UserTokens userTokens = testData.userTokens();
-        Purchase purchase = getPurchasesSut.purchaseRepository().create(new NewPurchase(testData.user().id(), Instant.now()));
+        Purchase purchase = getPurchasesSut.purchaseRepository().create(aNewPurchase().build(testData.user().id()));
         String expectedJson = expectedPurchases(purchase);
         UUID purchaseId = purchase.id();
 
