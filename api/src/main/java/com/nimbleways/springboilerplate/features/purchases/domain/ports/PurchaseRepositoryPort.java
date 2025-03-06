@@ -13,4 +13,6 @@ public interface PurchaseRepositoryPort {
     Optional<Purchase> findById(UUID purchaseId);
 
     Stream<Purchase> findByUserId(UUID userId);
+
+    Stream<Purchase> findCoworkersPurchases(UUID userId);
 }
