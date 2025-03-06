@@ -6,6 +6,7 @@ import com.nimbleways.springboilerplate.features.purchases.domain.ports.Purchase
 import com.nimbleways.springboilerplate.features.purchases.domain.valueobjects.NewPurchase;
 import org.eclipse.collections.api.map.MutableMap;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -27,6 +28,11 @@ public class FakePurchaseRepository implements PurchaseRepositoryPort {
         purchasesTable.put(id, entity);
 
         return entity;
+    }
+
+    @Override
+    public Optional<Purchase> findById(UUID purchaseId) {
+        return Optional.ofNullable(purchasesTable.get(purchaseId));
     }
 
     @Override
