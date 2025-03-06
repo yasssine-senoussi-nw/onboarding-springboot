@@ -4,13 +4,11 @@ import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purch
 import com.nimbleways.springboilerplate.features.purchases.domain.exceptions.PurchaseNotFoundException;
 import com.nimbleways.springboilerplate.features.purchases.domain.usecases.getpurchase.GetPurchaseCommand;
 import com.nimbleways.springboilerplate.features.purchases.domain.usecases.suts.GetPurchaseSut;
-import com.nimbleways.springboilerplate.features.purchases.domain.valueobjects.NewPurchase;
 import com.nimbleways.springboilerplate.features.users.domain.entities.User;
 import com.nimbleways.springboilerplate.testhelpers.annotations.UnitTest;
 import com.nimbleways.springboilerplate.testhelpers.utils.Instance;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import static com.nimbleways.springboilerplate.testhelpers.fixtures.NewPurchaseFixture.aNewPurchase;

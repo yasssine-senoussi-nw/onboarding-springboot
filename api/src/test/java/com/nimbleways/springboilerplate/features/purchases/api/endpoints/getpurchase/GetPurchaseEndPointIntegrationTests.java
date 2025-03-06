@@ -3,7 +3,6 @@ package com.nimbleways.springboilerplate.features.purchases.api.endpoints.getpur
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.UserTokens;
 import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purchase;
 import com.nimbleways.springboilerplate.features.purchases.domain.usecases.suts.GetPurchaseSut;
-import com.nimbleways.springboilerplate.features.purchases.domain.valueobjects.NewPurchase;
 import com.nimbleways.springboilerplate.testhelpers.BaseWebMvcIntegrationTests;
 import com.nimbleways.springboilerplate.testhelpers.helpers.UserSessionHelperSut;
 import jakarta.servlet.http.Cookie;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import static com.nimbleways.springboilerplate.testhelpers.fixtures.NewPurchaseFixture.aNewPurchase;
