@@ -3,7 +3,6 @@ package com.nimbleways.springboilerplate.features.purchases.api.endpoints.getpur
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.UserTokens;
 import com.nimbleways.springboilerplate.features.purchases.domain.entities.Purchase;
 import com.nimbleways.springboilerplate.features.purchases.domain.usecases.suts.GetPurchasesSut;
-import com.nimbleways.springboilerplate.features.purchases.domain.valueobjects.NewPurchase;
 import com.nimbleways.springboilerplate.testhelpers.BaseWebMvcIntegrationTests;
 import com.nimbleways.springboilerplate.testhelpers.helpers.UserSessionHelperSut;
 import jakarta.servlet.http.Cookie;
@@ -12,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 
-import java.time.Instant;
-
+import static com.nimbleways.springboilerplate.testhelpers.fixtures.NewPurchaseFixture.aNewPurchase;
 import static com.nimbleways.springboilerplate.testhelpers.helpers.TokenHelpers.urlEncodeAccessToken;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -50,7 +48,7 @@ class GetPurchasesEndPointIntegrationTests extends BaseWebMvcIntegrationTests {
     void returns_nonempty_purchases_when_get_purchases_succeed() throws Exception {
         // GIVEN
         UserSessionHelperSut.TestData testData = getPurchasesSut.sessionHelper().addUserAndSessionToRepository();
-        Purchase purchase = getPurchasesSut.purchaseRepository().create(new NewPurchase(testData.user().id(), Instant.now()));
+        Purchase purchase = getPurchasesSut.purchaseRepository().create(aNewPurchase().build(testData.user().id()));
         UserTokens userTokens = testData.userTokens();
         String expectedJson = expectedPurchases(purchase);
 

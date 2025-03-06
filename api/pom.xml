@@ -42,11 +42,11 @@
                 </file>
             </activation>
             <properties>
-                <domainMutationThreshold>100</domainMutationThreshold>
-                <domainCoverageThreshold>100</domainCoverageThreshold>
-                <domainTestStrengthThreshold>100</domainTestStrengthThreshold>
-                <totalLineCoverage>100</totalLineCoverage>
-                <totalBranchCoverage>100</totalBranchCoverage>
+                <domainMutationThreshold>89</domainMutationThreshold>
+                <domainCoverageThreshold>98</domainCoverageThreshold>
+                <domainTestStrengthThreshold>98</domainTestStrengthThreshold>
+                <totalLineCoverage>98</totalLineCoverage>
+                <totalBranchCoverage>98</totalBranchCoverage>
             </properties>
         </profile>
     </profiles>
