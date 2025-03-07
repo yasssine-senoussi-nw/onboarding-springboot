@@ -1,0 +1,78 @@
+databaseChangeLog:
+- changeSet:
+    id: 1741300857351-1
+    author: Yassine (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: PurchaseDbEntity_id
+            type: UUID
+        - column:
+            name: images
+            type: VARCHAR(255)
+        tableName: PurchaseDbEntity_images
+- changeSet:
+    id: 1741300857351-2
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: model
+            type: VARCHAR(255)
+        tableName: purchases
+- changeSet:
+    id: 1741300857351-3
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        tableName: purchases
+- changeSet:
+    id: 1741300857351-4
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: rating
+            type: INTEGER
+        tableName: purchases
+- changeSet:
+    id: 1741300857351-5
+    author: Yassine (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: store
+            type: VARCHAR(255)
+        tableName: purchases
+- changeSet:
+    id: 1741300857351-6
+    author: Yassine (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: PurchaseDbEntity_id
+        baseTableName: PurchaseDbEntity_images
+        constraintName: FKlbh6sb5662qaloirqvdfek0gf
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: purchases
+        validate: true
+

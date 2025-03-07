@@ -40,3 +40,6 @@ databaseChangeLog:
   - include:
       file: changelog/20250305-115154-add-create-purchase-endpoint.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changelog/20250306-224010-add-fields-to-purchase.yaml
+      relativeToChangelogFile: true

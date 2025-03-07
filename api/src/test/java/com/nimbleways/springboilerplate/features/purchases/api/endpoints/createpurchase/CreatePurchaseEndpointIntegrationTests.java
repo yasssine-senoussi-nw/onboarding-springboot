@@ -1,5 +1,6 @@
 package com.nimbleways.springboilerplate.features.purchases.api.endpoints.createpurchase;
 
+import com.nimbleways.springboilerplate.common.utils.collections.Immutable;
 import com.nimbleways.springboilerplate.features.authentication.domain.valueobjects.UserTokens;
 import com.nimbleways.springboilerplate.features.purchases.domain.usecases.suts.CreatePurchaseSut;
 import com.nimbleways.springboilerplate.testhelpers.BaseWebMvcIntegrationTests;
@@ -29,49 +30,66 @@ class CreatePurchaseEndpointIntegrationTests extends BaseWebMvcIntegrationTests 
         UserSessionHelperSut.TestData testData = createPurchaseSut.sessionHelper().addUserAndSessionToRepository();
         UserTokens userTokens = testData.userTokens();
         CreatePurchaseRequest request = new CreatePurchaseRequest(
-                testData.user().id().toString(),
-                "brand",
-                19.0
+            testData.user().id().toString(),
+            "name",
+            "brand",
+            "model",
+            "store",
+            Immutable.list.of("image1", "image2"),
+            9.5,
+            3
         );
         String requestJson = getRequestJson(request);
 
         // WHEN
         mockMvc
-                .perform(
-                        post(CREATE_PURCHASE_ENDPOINT)
-                                .cookie(new Cookie("accessToken", urlEncodeAccessToken(userTokens)))
-                                .content(requestJson)
-                                .contentType("application/json")
-                )
+            .perform(
+                post(CREATE_PURCHASE_ENDPOINT)
+                    .cookie(new Cookie("accessToken", urlEncodeAccessToken(userTokens)))
+                    .content(requestJson)
+                    .contentType("application/json")
+            )
 
-                // THEN
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.userId").value(request.userId()))
-                .andExpect(jsonPath("$.brand").value(request.brand()))
-                .andExpect(jsonPath("$.price").value(request.price()));
+            // THEN
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.userId").value(request.userId()))
+            .andExpect(jsonPath("$.brand").value(request.brand()))
+            .andExpect(jsonPath("$.price").value(request.price()));
     }
 
     @Test
     void returns_400_error_when_not_authenticated() throws Exception {
         // WHEN
         mockMvc
-                .perform(post(CREATE_PURCHASE_ENDPOINT))
+            .perform(post(CREATE_PURCHASE_ENDPOINT))
 
-                // THEN
-                .andExpect(status().isBadRequest());
+            // THEN
+            .andExpect(status().isBadRequest());
     }
 
     private static String getRequestJson(CreatePurchaseRequest request) {
-        return String.format("""
-                {
-                    "userId":"%s",
-                    "brand":"%s",
-                    "price":%s
-                }
-                """,
-                request.userId(),
-                request.brand(),
-                request.price()
+        // json transform this request
+        String images = request.images().collect(image -> "\"" + image + "\"").makeString("[", ",", "]");
+        return """
+            {
+              "userId": "%s",
+              "name": "%s",
+              "brand": "%s",
+              "model": "%s",
+              "store": "%s",
+              "images": %s,
+              "price": %s,
+              "rating": %s
+            }
+            """.formatted(
+            request.userId(),
+            request.name(),
+            request.brand(),
+            request.model(),
+            request.store(),
+            images,
+            request.price(),
+            request.rating()
         );
     }
 }

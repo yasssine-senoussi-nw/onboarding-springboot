@@ -17,7 +17,7 @@ class GetPurchasesUseCaseUnitTests {
     private final GetPurchasesSut sut = Instance.create(GetPurchasesSut.class);
 
     @Test
-    void returns_authenticated_user() {
+    void returns_list_of_purchases_when_authenticated() {
         // GIVEN
         User user = sut.sessionHelper().addUserAndSessionToRepository().user();
         Purchase purchase = sut.purchaseRepository().create(aNewPurchase().build(user.id()));

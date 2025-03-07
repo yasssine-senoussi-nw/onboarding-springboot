@@ -19,11 +19,16 @@ public class FakePurchaseRepository implements PurchaseRepositoryPort {
         UUID id = UUID.randomUUID();
 
         Purchase entity = new Purchase(
-                id,
-                purchase.userId(),
-                purchase.purchaseDate(),
-                purchase.brand(),
-                purchase.price()
+            id,
+            purchase.userId(),
+            purchase.name(),
+            purchase.purchaseDate(),
+            purchase.brand(),
+            purchase.model(),
+            purchase.store(),
+            purchase.images(),
+            purchase.price(),
+            purchase.rating()
         );
         purchasesTable.put(id, entity);
 
@@ -38,7 +43,14 @@ public class FakePurchaseRepository implements PurchaseRepositoryPort {
     @Override
     public Stream<Purchase> findByUserId(UUID userId) {
         return purchasesTable.values()
-                .stream()
-                .filter(purchase -> purchase.userId().equals(userId));
+            .stream()
+            .filter(purchase -> purchase.userId().equals(userId));
+    }
+
+    @Override
+    public Stream<Purchase> findCoworkersPurchases(UUID userId) {
+        return purchasesTable.values()
+            .stream()
+            .filter(purchase -> !purchase.userId().equals(userId));
     }
 }
