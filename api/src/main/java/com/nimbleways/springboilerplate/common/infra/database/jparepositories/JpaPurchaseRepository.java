@@ -13,5 +13,5 @@ public interface JpaPurchaseRepository extends JpaRepository<PurchaseDbEntity, U
 	Stream<PurchaseDbEntity> streamByUser_Id(UUID id);
 
 	@Query("SELECT p FROM PurchaseDbEntity p WHERE p.user.id != :userId")
-	Stream<PurchaseDbEntity> findOthersPurchases(UUID id);
+	Stream<PurchaseDbEntity> findOthersPurchases(UUID userId);
 }
